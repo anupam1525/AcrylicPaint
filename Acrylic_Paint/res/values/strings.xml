@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, EasyPaint!</string>
+    <string name="app_name">Acrylic Paint</string>
+    <string name="share_title_template">See what dearest painted</string>
+    <string name="share_text_template"></string>
+     <string name="toolbox_share_title">Share</string>
+     <string name="no_way_to_share">Can locate an app to share with...</string>
+
+</resources>
