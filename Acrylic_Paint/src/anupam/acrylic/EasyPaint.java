@@ -30,27 +30,32 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.EmbossMaskFilter;
+import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import anupam.acrylic.R;
 
 public class EasyPaint extends GraphicsActivity implements
 		ColorPickerDialog.OnColorChangedListener {
-
-	RelativeLayout rl;
-	TextView txt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,10 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
 		mPaint.setStrokeWidth(5);
 
+		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
+
+		mBlur = new BlurMaskFilter(5, BlurMaskFilter.Blur.NORMAL);
+
 		if (isFirstTime()) {
 
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -78,7 +87,7 @@ public class EasyPaint extends GraphicsActivity implements
 			String msg2 = "";
 			String msg3 = "";
 			String msg4 = "Press menu for more options !!";
-			String msg5 = "Happy Coloring !!!";
+			String msg5 = "Happy Coloring !!";
 
 			alert.setMessage(msg1 + "\n" + msg2 + "\n" + msg3 + "\n" + msg4
 					+ "\n" + msg5);
@@ -90,7 +99,7 @@ public class EasyPaint extends GraphicsActivity implements
 
 							Toast.makeText(getApplicationContext(),
 									"Here is your canvas. Start coloring !!",
-									Toast.LENGTH_LONG).show();
+									Toast.LENGTH_SHORT).show();
 
 						}
 					});
@@ -99,14 +108,15 @@ public class EasyPaint extends GraphicsActivity implements
 		}
 		if (isSecondTime()) {
 			Toast.makeText(getApplicationContext(),
-					"Here is your canvas. Start coloring !!", Toast.LENGTH_LONG)
-					.show();
+					"Here is your canvas. Start coloring !!",
+					Toast.LENGTH_SHORT).show();
 		}
 
 	}
 
 	private Paint mPaint;
-	private int bgColor = 0xFFFFFFFF;
+	private MaskFilter mEmboss;
+	private MaskFilter mBlur;
 
 	public void colorChanged(int color) {
 		mPaint.setColor(color);
@@ -194,22 +204,28 @@ public class EasyPaint extends GraphicsActivity implements
 	}
 
 	private static final int COLOR_MENU_ID = Menu.FIRST;
-	private static final int ERASE_MENU_ID = Menu.FIRST + 1;
-	private static final int CLEAR_ALL = Menu.FIRST + 2;
-	private static final int SAVE = Menu.FIRST + 3;
-	private static final int SHARE = Menu.FIRST + 4;
-	private static final int ABOUT = Menu.FIRST + 5;
+	private static final int EMBOSS_MENU_ID = Menu.FIRST + 1;
+	private static final int BLUR_MENU_ID = Menu.FIRST + 2;
+	private static final int SIZE_MENU_ID = Menu.FIRST + 3;
+	private static final int ERASE_MENU_ID = Menu.FIRST + 4;
+	private static final int CLEAR_ALL = Menu.FIRST + 5;
+	private static final int SAVE = Menu.FIRST + 6;
+	private static final int SHARE = Menu.FIRST + 7;
+	private static final int ABOUT = Menu.FIRST + 8;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
 		menu.add(0, COLOR_MENU_ID, 0, "Color").setIcon(R.drawable.color);
+		menu.add(0, EMBOSS_MENU_ID, 0, "Emboss").setIcon(R.drawable.emboss);
+		menu.add(0, BLUR_MENU_ID, 0, "Blur").setIcon(R.drawable.blur);
+		menu.add(0, SIZE_MENU_ID, 0, "Brush Size").setIcon(R.drawable.size);
 		menu.add(0, ERASE_MENU_ID, 0, "Erase").setIcon(R.drawable.erase);
-		menu.add(0, CLEAR_ALL, 0, "Clear All").setIcon(R.drawable.clear_all);
-		menu.add(0, SAVE, 0, "Save").setIcon(R.drawable.save);
-		menu.add(0, SHARE, 0, "Share").setIcon(R.drawable.share);
-		menu.add(0, ABOUT, 0, "About").setIcon(R.drawable.about);
+		menu.add(0, CLEAR_ALL, 0, "Clear All");
+		menu.add(0, SAVE, 0, "Save");
+		menu.add(0, SHARE, 0, "Share");
+		menu.add(0, ABOUT, 0, "About");
 
 		/****
 		 * Is this the mechanism to extend with filter effects? Intent intent =
@@ -236,8 +252,70 @@ public class EasyPaint extends GraphicsActivity implements
 		case COLOR_MENU_ID:
 			new ColorPickerDialog(this, this, mPaint.getColor()).show();
 			return true;
+		case EMBOSS_MENU_ID:
+			if (mPaint.getMaskFilter() != mEmboss) {
+				mPaint.setMaskFilter(mEmboss);
+			} else {
+				mPaint.setMaskFilter(null);
+			}
+			return true;
+		case BLUR_MENU_ID:
+			if (mPaint.getMaskFilter() != mBlur) {
+				mPaint.setMaskFilter(mBlur);
+			} else {
+				mPaint.setMaskFilter(null);
+			}
+			return true;
+		case SIZE_MENU_ID:
+			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View layout = inflater.inflate(R.layout.brush,
+					(ViewGroup) findViewById(R.id.root));
+			AlertDialog.Builder builder = new AlertDialog.Builder(this)
+					.setView(layout);
+			final AlertDialog alertDialog = builder.create();
+			alertDialog.show();
+			SeekBar sb = (SeekBar) layout.findViewById(R.id.seekBar1);
+			sb.setProgress(5);
+			final Button done = (Button) layout.findViewById(R.id.select_size);
+			final TextView txt = (TextView) layout
+					.findViewById(R.id.size_value);
+			txt.setText("Default brush size is: 5");
+			sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+				public void onProgressChanged(SeekBar seekBar,
+						final int progress, boolean fromUser) {
+					// Do something here with new value
+					txt.setText("Your selected brush size is: " + progress);
+					mPaint.setStrokeWidth(progress);
+					done.setOnClickListener(new OnClickListener() {
+
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							if (progress == 0) {
+								Toast.makeText(
+										getApplicationContext(),
+										"Please select atleast 1 as brush size.",
+										Toast.LENGTH_SHORT).show();
+							} else {
+								alertDialog.dismiss();
+							}
+						}
+					});
+				}
+
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+
+				}
+
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+			return true;
 		case ERASE_MENU_ID:
-			mPaint.setColor(bgColor);
+			// mPaint.setColor(bgColor);
+			mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 			return true;
 		case CLEAR_ALL:
 			Intent intent = getIntent();
