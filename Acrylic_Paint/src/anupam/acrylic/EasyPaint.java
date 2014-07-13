@@ -131,8 +131,11 @@ public class EasyPaint extends GraphicsActivity implements
 
 		public MyView(Context c) {
 			super(c);
-
-			mBitmap = Bitmap.createBitmap(1024, 1024, Bitmap.Config.ARGB_8888);
+		
+			Display display = getWindowManager().getDefaultDisplay();
+			width = display.getWidth();
+			height = display.getHeight();
+			mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 			mCanvas = new Canvas(mBitmap);
 			mPath = new Path();
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
