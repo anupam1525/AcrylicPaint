@@ -20,11 +20,8 @@
      <string name="about">About</string>
      <string name="default_brush_size_is">Default brush size is: %1$s</string>
      <string name="saved_your_location_to">Saved your creation to %1$s</string>
-     <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\n
-		 Pick your colors and start painting.\n\n
-		 Press menu for more options!\n
-		 Happy Coloring :)
-		 </string>
+     <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick your colors and start painting.\n\nPress menu for more options!\nHappy Coloring :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, and to Valerio Bozzolan for reviving the project.
+ </string>
      <string name="choose_brush_width">Choose your Brush width</string>
      <string name="select">Select</string>
      <string name="continue_fuck">Continue</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->
