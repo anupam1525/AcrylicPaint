@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/choose_brush_width"
+        android:text="Choose Your Brush Width"
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/size_value"
         android:layout_centerHorizontal="true"
-        android:text="@string/select" >
+        android:text="Select" >
     </Button>
 
 </RelativeLayout>
