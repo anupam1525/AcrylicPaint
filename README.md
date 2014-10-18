@@ -1,4 +1,6 @@
-== ﻿Acrylic Paint ==
+Acrylic Paint
+=============
+
 Acrylic Paint is a coloring tool which helps you to make anything from your imagination.
 Made some changes from FingerPaint project taken from API demos.
 
@@ -8,14 +10,16 @@ Originally created by:
 Forked (and translated in Italian) by:
 * Valerio Bozzolan (http://contatti.reyboz.it)
 
-== Licenses ==
+Licenses
+--------
+
 * Android™ API demos (@ http://developer.android.com/samples/index.html) originally released under Apache 2.0 license.
-
 * Acrylic Paint (@ https://github.com/anupam1525/AcrylicPaint) originally released under the Apache 2.0 license.
-
 * Acrylic Paint (@ github.com/valerio-bozzolan/) released under the terms of the GNU General Public License Version 3+.
-So every line of this app it's "upgraded" from Apache 2.0 to GPLv3+.
+
+But every line of this app it's "upgraded" from the Apache 2.0 license to the GPLv3+ license.
 (Read more about "license upgrading here: https://www.gnu.org/licenses/quick-guide-gplv3.html#new-compatible-licenses)
+If I have done some errors during the license upgrade process, please tell me about how to upgrade the license of this app in the bug report..
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,3 +33,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
