@@ -200,28 +200,30 @@ public class EasyPaint extends GraphicsActivity implements
 		}
 	}
 
-	private static final int COLOR_MENU_ID = Menu.FIRST;
-	private static final int EMBOSS_MENU_ID = Menu.FIRST + 1;
-	private static final int BLUR_MENU_ID = Menu.FIRST + 2;
-	private static final int SIZE_MENU_ID = Menu.FIRST + 3;
-	private static final int ERASE_MENU_ID = Menu.FIRST + 4;
-	private static final int CLEAR_ALL = Menu.FIRST + 5;
-	private static final int SAVE = Menu.FIRST + 6;
-	private static final int SHARE = Menu.FIRST + 7;
-	private static final int ABOUT = Menu.FIRST + 8;
+	private static final int NORMAL_BRUSH = Menu.FIRST;
+	private static final int COLOR_MENU_ID = Menu.FIRST + 1;
+	private static final int SIZE_MENU_ID = Menu.FIRST + 2;
+	private static final int ERASE_MENU_ID = Menu.FIRST + 3;
+	private static final int CLEAR_ALL = Menu.FIRST + 4;
+	private static final int EMBOSS_MENU_ID = Menu.FIRST + 5;
+	private static final int BLUR_MENU_ID = Menu.FIRST + 6;
+	private static final int SAVE = Menu.FIRST + 7;
+	private static final int SHARE = Menu.FIRST + 8;
+	private static final int ABOUT = Menu.FIRST + 9;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
+		menu.add(0, NORMAL_BRUSH, 0, R.string.normal);
 		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color);
-		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(
-				R.drawable.emboss);
-		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur);
 		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size).setIcon(
 				R.drawable.size);
 		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase);
 		menu.add(0, CLEAR_ALL, 0, R.string.clear_all);
+		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(
+				R.drawable.emboss);
+		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur);
 		menu.add(0, SAVE, 0, R.string.save);
 		menu.add(0, SHARE, 0, R.string.share);
 		menu.add(0, ABOUT, 0, R.string.about);
@@ -248,22 +250,17 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setAlpha(0xFF);
 
 		switch (item.getItemId()) {
+		case NORMAL_BRUSH:
+			mPaint.setMaskFilter(null);
+			return true;
 		case COLOR_MENU_ID:
 			new ColorPickerDialog(this, this, mPaint.getColor()).show();
 			return true;
 		case EMBOSS_MENU_ID:
-			if (mPaint.getMaskFilter() != mEmboss) {
-				mPaint.setMaskFilter(mEmboss);
-			} else {
-				mPaint.setMaskFilter(null);
-			}
+			mPaint.setMaskFilter(mEmboss);
 			return true;
 		case BLUR_MENU_ID:
-			if (mPaint.getMaskFilter() != mBlur) {
-				mPaint.setMaskFilter(mBlur);
-			} else {
-				mPaint.setMaskFilter(null);
-			}
+			mPaint.setMaskFilter(mBlur);
 			return true;
 		case SIZE_MENU_ID:
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -315,6 +312,53 @@ public class EasyPaint extends GraphicsActivity implements
 			});
 			return true;
 		case ERASE_MENU_ID:
+			LayoutInflater inflater_e = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View layout_e = inflater_e.inflate(R.layout.brush,
+					(ViewGroup) findViewById(R.id.root));
+			AlertDialog.Builder builder_e = new AlertDialog.Builder(this)
+					.setView(layout_e);
+			final AlertDialog alertDialog_e = builder_e.create();
+			alertDialog_e.show();
+			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.seekBar1);
+			sb_e.setProgress(5);
+			final Button done_e = (Button) layout_e.findViewById(R.id.select_size);
+			final TextView txt_e = (TextView) layout_e
+					.findViewById(R.id.size_value);
+			txt_e.setText(String
+					.format(getResources().getString(
+							R.string.default_eraser_size_is), 5));
+			sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+				public void onProgressChanged(SeekBar seekBar,
+						final int progress, boolean fromUser) {
+					// Do something here with new value
+					txt_e.setText(String.format(getResources().getString(R.string.your_selected_eraser_size_is), progress));
+					mPaint.setStrokeWidth(progress);
+					done_e.setOnClickListener(new OnClickListener() {
+
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							if (progress == 0) {
+								Toast.makeText(
+										getApplicationContext(),
+										R.string.error_eraser_size,
+										Toast.LENGTH_SHORT).show();
+							} else {
+								alertDialog_e.dismiss();
+							}
+						}
+					});
+				}
+
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+
+				}
+
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					// TODO Auto-generated method stub
+
+				}
+			});
 			// mPaint.setColor(bgColor);
 			mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 			return true;
