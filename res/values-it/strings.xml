@@ -22,8 +22,13 @@
 
     <string name="pick_color">Scegli un Colore</string>
     <string name="toolbox_share_title">Condividi</string>
-    <string name="share_title_template">Vedi cosa hai dipinto</string>
+    <string name="share_title_template">Guarda cosa ho dipinto con Acrylic Paint. --- Acrylic Paint (Simple finger painting) - https://f-droid.org/app/anupam.acrylic </string>
     <string name="share_text_template">Condividi come testo</string>
     <string name="no_way_to_share">Non ci sono app con cui condividere il tuo lavoro…</string>
+    <string name="normal">Matita</string>
+    <string name="your_selected_eraser_size_is">Dimensione della gomma scelta: %1$s</string>
+    <string name="default_eraser_size_is">Dimensione predefinita della gomma: %1$s</string>
+    <string name="error_eraser_size">Per favore seleziona almeno &quot;1&quot; come dimensione dela Gomma</string>
+    <string name="choose_eraser_width">Scegli dimensione Gomma</string>
 
 </resources>

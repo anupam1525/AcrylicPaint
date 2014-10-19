@@ -100,9 +100,9 @@ public class ColorPickerDialog extends Dialog {
             setMeasuredDimension(CENTER_X*2, CENTER_Y*2);
         }
 
-        private static final int CENTER_X = 150;
-        private static final int CENTER_Y = 150;
-        private static final int CENTER_RADIUS = 60;
+        private static final int CENTER_X = 500;
+        private static final int CENTER_Y = 500;
+        private static final int CENTER_RADIUS = 300;
 
         private int floatToByte(float x) {
             int n = java.lang.Math.round(x);
