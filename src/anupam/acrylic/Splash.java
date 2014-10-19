@@ -36,7 +36,6 @@ public class Splash extends Activity {
 
 			public void run() {
 				try {
-
 					Thread.sleep(2000);
 
 					Intent i = new Intent();
@@ -48,11 +47,8 @@ public class Splash extends Activity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		};
 		t.start();
 	}
-
 }

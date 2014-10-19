@@ -82,8 +82,7 @@ public class EasyPaint extends GraphicsActivity implements
 
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-			alert.setTitle(R.string.app_name + " - " + R.string.info);
-
+			alert.setTitle(R.string.app_name + " - " + R.string.about);
 
 			alert.setMessage(R.string.app_description);
 

@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, EasyPaint!</string>
     <string name="app_name">Acrylic Paint</string>
-    <string name="share_title_template">See what dearest painted</string>
-    <string name="share_text_template"></string>
-     <string name="toolbox_share_title">Share</string>
-     <string name="no_way_to_share">Can't locate an app to share with…</string>
-     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
-     <string name="color">Color</string>
-     <string name="info">Info</string>
-     <string name="emboss">Bold</string>
-     <string name="blur">Blur</string>
-     <string name="brush_size">Brush size</string>
-     <string name="erase">Erase</string>
-     <string name="clear_all">Clear all</string>
-     <string name="save">Save</string>
-     <string name="share">Share</string>
-     <string name="about">About</string>
-     <string name="default_brush_size_is">Default brush size is: %1$s</string>
-     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
-     <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, and to Valerio Bozzolan for reviving the project.
- </string>
-     <string name="choose_brush_width">Choose your Brush width</string>
-     <string name="select">Select</string>
-     <string name="continue_fuck">Continue</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->
-     <string name="ok">OK</string>
-     <string name="error_brush_size">Please select at least "1" as brush size.</string>
-     <string name="pick_color">Pick a Color</string>
-     <string name="your_selected_brush_size_is">Your selected brush size is: %1$s</string>
+	<string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, and to Valerio Bozzolan for reviving the project. Thanks to all the contributors!</string>
+    <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
+    <string name="color">Color</string>
+    <string name="emboss">Bold</string>
+    <string name="blur">Blur</string>
+    <string name="brush_size">Brush size</string>
+    <string name="erase">Erase</string>
+    <string name="clear_all">Erase all</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="about">About</string>
+    <string name="default_brush_size_is">Default brush size is: %1$s</string>
+    <string name="your_selected_brush_size_is">Your selected brush size is: %1$s</string>
+    <string name="error_brush_size">Please select at least "1" as brush size.</string>
+    <string name="choose_brush_width">Choose your Brush width</string>
+    <string name="saved_your_location_to">Saved your artwork to %1$s</string>
+    <string name="select">Select</string>
+    <string name="continue_fuck">Continue</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->
+    <string name="ok">OK</string>
+    <string name="pick_color">Pick a Color</string>
+    <string name="toolbox_share_title">Share</string>
+    <string name="share_title_template">See what dearest painted</string><!--  ??  -->
+    <string name="share_text_template">Share as text</string>
+    <string name="no_way_to_share">Can\'t locate an app to share with…</string>
 
 </resources>

@@ -29,6 +29,7 @@ import android.view.ViewParent;
 
 
 public class PictureLayout extends ViewGroup {
+	private static String error = "PictureLayout can host only one direct child";
     private final Picture mPicture = new Picture();
 
     public PictureLayout(Context context) {
@@ -37,12 +38,12 @@ public class PictureLayout extends ViewGroup {
 
     public PictureLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }    
+    }
 
     @Override
     public void addView(View child) {
         if (getChildCount() > 1) {
-            throw new IllegalStateException("PictureLayout can host only one direct child");
+            throw new IllegalStateException(error);
         }
 
         super.addView(child);
@@ -51,7 +52,7 @@ public class PictureLayout extends ViewGroup {
     @Override
     public void addView(View child, int index) {
         if (getChildCount() > 1) {
-            throw new IllegalStateException("PictureLayout can host only one direct child");
+            throw new IllegalStateException(error);
         }
 
         super.addView(child, index);
@@ -60,7 +61,7 @@ public class PictureLayout extends ViewGroup {
     @Override
     public void addView(View child, LayoutParams params) {
         if (getChildCount() > 1) {
-            throw new IllegalStateException("PictureLayout can host only one direct child");
+            throw new IllegalStateException(error);
         }
 
         super.addView(child, params);
@@ -69,7 +70,7 @@ public class PictureLayout extends ViewGroup {
     @Override
     public void addView(View child, int index, LayoutParams params) {
         if (getChildCount() > 1) {
-            throw new IllegalStateException("PictureLayout can host only one direct child");
+            throw new IllegalStateException(error);
         }
 
         super.addView(child, index, params);
@@ -106,7 +107,7 @@ public class PictureLayout extends ViewGroup {
         setMeasuredDimension(resolveSize(maxWidth, widthMeasureSpec),
                 resolveSize(maxHeight, heightMeasureSpec));
     }
-    
+
     private void drawPict(Canvas canvas, int x, int y, int w, int h,
                           float sx, float sy) {
         canvas.save();
@@ -123,10 +124,10 @@ public class PictureLayout extends ViewGroup {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(mPicture.beginRecording(getWidth(), getHeight()));
         mPicture.endRecording();
-        
+
         int x = getWidth()/2;
         int y = getHeight()/2;
-        
+
         if (false) {
             canvas.drawPicture(mPicture);
         } else {
