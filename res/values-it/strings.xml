@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_description">Acrylic Paint è uno strumento che ti aiuta a colorare la tua immaginazione.\n\nScegli un colore e libera la tua fantasia.\n\nPremi il tasto menù per più opzioni!\n\nDivertiti :)\n\nQuest\'app è un software libero rilasciato sotto i termini della licenza GNU General Public License.\nUn ringraziamento ad Anupam Shrivastava per l\'idea e a Valerio Bozzolan per la riesumazione del progetto. Grazie a tutti i contributori!</string>
+    <string name="app_description">Acrylic Paint è uno strumento che ti aiuta a colorare la tua immaginazione.\n\nScegli un colore e libera la tua fantasia.\n\nPremi il tasto menù per più opzioni!\n\nDivertiti :)\n\nQuest\'app è un software libero rilasciato sotto i termini della licenza GNU General Public License.\nUn ringraziamento all\'autore originale Anupam Shrivastava ed a Valerio Bozzolan per la riesumazione del progetto. Grazie a tutti i contributori!</string>
     <string name="here_is_your_canvas">Qui c\'è la tua tela. Inizia a colorare!</string>
     <string name="color">Colore</string>
     <string name="emboss">Grassetto</string>

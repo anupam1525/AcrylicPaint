@@ -37,6 +37,7 @@ import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.net.ConnectivityManager;
@@ -58,6 +59,10 @@ import android.widget.Toast;
 
 public class EasyPaint extends GraphicsActivity implements
 		ColorPickerDialog.OnColorChangedListener {
+
+	private Paint mPaint;
+	private MaskFilter mEmboss;
+	private MaskFilter mBlur;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +112,6 @@ public class EasyPaint extends GraphicsActivity implements
 
 	}
 
-	private Paint mPaint;
-	private MaskFilter mEmboss;
-	private MaskFilter mBlur;
-
 	public void colorChanged(int color) {
 		mPaint.setColor(color);
 	}
@@ -126,8 +127,11 @@ public class EasyPaint extends GraphicsActivity implements
 			super(c);
 
 			Display display = getWindowManager().getDefaultDisplay();
-			int width = display.getWidth();
-			int height = display.getHeight();
+			Point size = new Point();
+			display.getSize(size);
+			int width = size.x;
+			int height = size.y;
+
 			mBitmap = Bitmap.createBitmap(width, height,
 					Bitmap.Config.ARGB_8888);
 			mCanvas = new Canvas(mBitmap);
@@ -200,11 +204,11 @@ public class EasyPaint extends GraphicsActivity implements
 		}
 	}
 
-	private static final int NORMAL_BRUSH = Menu.FIRST;
-	private static final int COLOR_MENU_ID = Menu.FIRST + 1;
-	private static final int SIZE_MENU_ID = Menu.FIRST + 2;
-	private static final int ERASE_MENU_ID = Menu.FIRST + 3;
-	private static final int CLEAR_ALL = Menu.FIRST + 4;
+	private static final int COLOR_MENU_ID = Menu.FIRST;
+	private static final int SIZE_MENU_ID = Menu.FIRST + 1;
+	private static final int ERASE_MENU_ID = Menu.FIRST + 2;
+	private static final int CLEAR_ALL = Menu.FIRST + 3;
+	private static final int NORMAL_BRUSH = Menu.FIRST + 4;
 	private static final int EMBOSS_MENU_ID = Menu.FIRST + 5;
 	private static final int BLUR_MENU_ID = Menu.FIRST + 6;
 	private static final int SAVE = Menu.FIRST + 7;
@@ -215,17 +219,18 @@ public class EasyPaint extends GraphicsActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add(0, NORMAL_BRUSH, 0, R.string.normal);
-		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color);
+		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size).setIcon(
 				R.drawable.size);
 		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase);
 		menu.add(0, CLEAR_ALL, 0, R.string.clear_all);
+		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(
+				R.drawable.size);
 		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(
 				R.drawable.emboss);
 		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur);
 		menu.add(0, SAVE, 0, R.string.save);
-		menu.add(0, SHARE, 0, R.string.share);
+		menu.add(0, SHARE, 0, R.string.share).setIcon(R.drawable.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add(0, ABOUT, 0, R.string.about);
 
 		/****
@@ -411,6 +416,10 @@ public class EasyPaint extends GraphicsActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * This takes the screenshot of the whole screen.
+	 * Is this a good thing?
+	 */
 	private File takeScreenshot(boolean showToast) {
 		View v = getWindow().getDecorView();
 
