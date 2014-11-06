@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_description">Acrylic Paint è uno strumento che ti aiuta a colorare la tua immaginazione.\n\nScegli un colore e libera la tua fantasia.\n\nPremi il tasto menù per più opzioni!\n\nDivertiti :)\n\nQuest\'app è un software libero rilasciato sotto i termini della licenza GNU General Public License.\nUn ringraziamento all\'autore originale Anupam Shrivastava ed a Valerio Bozzolan per la riesumazione del progetto. Grazie a tutti i contributori!</string>
+    <string name="app_description">Acrylic Paint è uno strumento che ti aiuta a colorare la tua immaginazione.\n\nScegli un colore e libera la tua fantasia.\n\nPremi il tasto menù per più opzioni!\n\nDivertiti :)\n\nQuest\'app è un software libero rilasciato sotto i termini della licenza GNU General Public License.\nUn ringraziamento all\'autore originale Anupam Shrivastava, a Valerio Bozzolan per la riesumazione del progetto e a Marco Gagino per il sostegno spaventoso. Grazie a tutti i contributori!</string>
     <string name="here_is_your_canvas">Qui c\'è la tua tela. Inizia a colorare!</string>
     <string name="color">Colore</string>
     <string name="emboss">Grassetto</string>
@@ -12,23 +12,17 @@
     <string name="save">Salva</string>
     <string name="share">Condividi</string>
     <string name="about">Informazioni</string>
-    <string name="default_brush_size_is">Dimensione predefinita del pennello: %1$s</string>
-    <string name="your_selected_brush_size_is">Dimensione del Pennello scelta: %1$s</string>
-    <string name="error_brush_size">Per favore seleziona almeno "1" come dimensione del Pennello</string>
-    <string name="choose_brush_width">Scegli dimensione Pennello</string>
+    <string name="default_size_is">Dimensione predefinita: %1$s</string>
+    <string name="your_selected_size_is">Dimensione scelta: %1$s</string>
+    <string name="choose_width">Scegli dimensione:</string>
     <string name="saved_your_location_to">La tua creazione è stata salvata in %1$s</string>
     <string name="select">Seleziona</string>
     <string name="continue_fuck">Continua</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->
 
     <string name="pick_color">Scegli un Colore</string>
     <string name="toolbox_share_title">Condividi</string>
-    <string name="share_title_template">Guarda cosa ho dipinto con Acrylic Paint. --- Acrylic Paint (Simple finger painting) - https://f-droid.org/app/anupam.acrylic </string>
+    <string name="share_title_template">Guarda cosa ho dipinto con Acrylic Paint! --- Acrylic Paint (Simple finger painting) - https://f-droid.org/app/anupam.acrylic</string>
     <string name="share_text_template">Condividi come testo</string>
     <string name="no_way_to_share">Non ci sono app con cui condividere il tuo lavoro…</string>
     <string name="normal">Matita</string>
-    <string name="your_selected_eraser_size_is">Dimensione della gomma scelta: %1$s</string>
-    <string name="default_eraser_size_is">Dimensione predefinita della gomma: %1$s</string>
-    <string name="error_eraser_size">Per favore seleziona almeno &quot;1&quot; come dimensione dela Gomma</string>
-    <string name="choose_eraser_width">Scegli dimensione Gomma</string>
-
 </resources>

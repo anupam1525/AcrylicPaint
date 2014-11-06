@@ -17,6 +17,7 @@
 
 package anupam.acrylic;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+@SuppressLint("ClickableViewAccessibility")
 public class ColorPickerDialog extends Dialog {
 
     private OnColorChangedListener mListener;
@@ -80,7 +82,7 @@ public class ColorPickerDialog extends Dialog {
 
             mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mCenterPaint.setColor(color);
-            mCenterPaint.setStrokeWidth(10);
+            mCenterPaint.setStrokeWidth(EasyPaint.DEFAULT_BRUSH_SIZE);
         }
 
         @Override

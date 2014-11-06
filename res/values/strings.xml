@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Acrylic Paint</string>
-	<string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, and to Valerio Bozzolan for reviving the project. Thanks to all the contributors!</string>
+	<string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the strong support. Thanks to all the contributors!</string>
     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
     <string name="color">Color</string>
     <string name="emboss">Bold</string>
@@ -12,10 +12,9 @@
     <string name="save">Save</string>
     <string name="share">Share</string>
     <string name="about">About</string>
-    <string name="default_brush_size_is">Default brush size is: %1$s</string>
-    <string name="your_selected_brush_size_is">Your selected brush size is: %1$s</string>
-    <string name="error_brush_size">Please select at least "1" as brush size.</string>
-    <string name="choose_brush_width">Choose your Brush width</string>
+    <string name="default_size_is">Default size: %1$s</string>
+    <string name="your_selected_size_is">Selected size: %1$s</string>
+    <string name="choose_width">Choose your size:</string>
     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
     <string name="select">Select</string>
     <string name="continue_fuck">Continue</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->
@@ -26,9 +25,4 @@
     <string name="share_text_template">Share as text</string>
     <string name="no_way_to_share">Can\'t locate an app to share with…</string>
     <string name="normal">Pencil</string>
-    <string name="your_selected_eraser_size_is">Your selected eraser size is: %1$s</string>
-    <string name="default_eraser_size_is">Default eraser size is: %1$s</string>
-    <string name="error_eraser_size">Please select at least &quot;1&quot; as eraser size.</string>
-    <string name="choose_eraser_width">Choose your Eraser width</string>
-
 </resources>

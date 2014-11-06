@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,8 +41,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Display;
@@ -58,6 +57,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ClickableViewAccessibility")
 public class EasyPaint extends GraphicsActivity implements
 		ColorPickerDialog.OnColorChangedListener {
 
@@ -65,7 +65,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
 	
-	   
+	public static int DEFAULT_BRUSH_SIZE = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setStrokeJoin(Paint.Join.ROUND);
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		mPaint.setStrokeWidth(10);
+		mPaint.setStrokeWidth(DEFAULT_BRUSH_SIZE);
 
 		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
 
@@ -116,8 +116,7 @@ public class EasyPaint extends GraphicsActivity implements
 					});
 
 			alert.show();
-		}
-		if (isSecondTime()) {
+		} else {
 			Toast.makeText(getApplicationContext(),
 					R.string.here_is_your_canvas, Toast.LENGTH_SHORT).show();
 		}
@@ -285,92 +284,68 @@ public class EasyPaint extends GraphicsActivity implements
 			final AlertDialog alertDialog = builder.create();
 			alertDialog.show();
 			SeekBar sb = (SeekBar) layout.findViewById(R.id.seekBar1);
-			sb.setProgress(10);
+			sb.setProgress(getStrokeSize());
 			final Button done = (Button) layout.findViewById(R.id.select_size);
 			final TextView txt = (TextView) layout
 					.findViewById(R.id.size_value);
 			txt.setText(String
 					.format(getResources().getString(
-							R.string.default_brush_size_is), 10));
+							R.string.default_size_is), getStrokeSize()));
 			sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
 					// Do something here with new value
-					txt.setText(String.format(getResources().getString(R.string.your_selected_brush_size_is), progress));
 					mPaint.setStrokeWidth(progress);
-					done.setOnClickListener(new OnClickListener() {
-
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							if (progress == 0) {
-								Toast.makeText(
-										getApplicationContext(),
-										R.string.error_brush_size,
-										Toast.LENGTH_SHORT).show();
-							} else {
-								alertDialog.dismiss();
-							}
-						}
-					});
+					txt.setText(String.format(getResources().getString(R.string.your_selected_size_is), progress));
 				}
-
+				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
-
 				}
-
+				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
-
+				}
+			});
+			done.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					alertDialog.dismiss();
 				}
 			});
 			return true;
 		case ERASE_MENU_ID:
 			LayoutInflater inflater_e = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View layout_e = inflater_e.inflate(R.layout.eraser,
+			View layout_e = inflater_e.inflate(R.layout.brush,
 					(ViewGroup) findViewById(R.id.root));
 			AlertDialog.Builder builder_e = new AlertDialog.Builder(this)
 					.setView(layout_e);
 			final AlertDialog alertDialog_e = builder_e.create();
 			alertDialog_e.show();
 			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.seekBar1);
-			sb_e.setProgress(10);
+			sb_e.setProgress(getStrokeSize());
 			final Button done_e = (Button) layout_e.findViewById(R.id.select_size);
 			final TextView txt_e = (TextView) layout_e
 					.findViewById(R.id.size_value);
 			txt_e.setText(String
 					.format(getResources().getString(
-							R.string.default_eraser_size_is), 10));
+							R.string.default_size_is), getStrokeSize()));
 			sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
 					// Do something here with new value
-					txt_e.setText(String.format(getResources().getString(R.string.your_selected_eraser_size_is), progress));
 					mPaint.setStrokeWidth(progress);
-					done_e.setOnClickListener(new OnClickListener() {
-
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							if (progress == 0) {
-								Toast.makeText(
-										getApplicationContext(),
-										R.string.error_eraser_size,
-										Toast.LENGTH_SHORT).show();
-							} else {
-								alertDialog_e.dismiss();
-							}
-						}
-					});
+					txt_e.setText(String.format(getResources().getString(R.string.your_selected_size_is), progress));
 				}
-
 				public void onStartTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
-
 				}
-
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
-
+				}
+			});
+			done_e.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					alertDialog_e.dismiss();
 				}
 			});
 			// mPaint.setColor(bgColor);
@@ -498,28 +473,7 @@ public class EasyPaint extends GraphicsActivity implements
 		return !ranBefore;
 	}
 
-	private boolean isSecondTime() {
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		boolean ranBefore = preferences.getBoolean("SecondRun", true);
-		if (ranBefore) {
-			// second time
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putBoolean("SecondRun", false);
-			editor.commit();
-		}
-		return !ranBefore;
-	}
-
-	public boolean connectionAvailable() {
-		boolean connected = false;
-		@SuppressWarnings("static-access")
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
-		if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-				.getState() == NetworkInfo.State.CONNECTED
-				|| connectivityManager.getNetworkInfo(
-						ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-			connected = true;
-		}
-		return connected;
+	private int getStrokeSize() {
+		return (int) mPaint.getStrokeWidth();
 	}
 }
