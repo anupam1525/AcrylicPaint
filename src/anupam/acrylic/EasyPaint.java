@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +32,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.EmbossMaskFilter;
 import android.graphics.MaskFilter;
 import android.graphics.Paint;
@@ -52,6 +52,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,21 +64,32 @@ public class EasyPaint extends GraphicsActivity implements
 	private Paint mPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
+	
+	   
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//it removes the title from the actionbar(more space for icons?)
+		//this.getActionBar().setDisplayShowTitleEnabled(false); 
+		
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		//this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION); 
+		//it removes the navigation bar, but you can't paint without it and once it is shown again, it doesn't hide again
+		
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		setContentView(new MyView(this));
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setDither(true);
-		mPaint.setColor(0xFFF00000);
+		mPaint.setColor(Color.GREEN);
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setStrokeJoin(Paint.Join.ROUND);
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		mPaint.setStrokeWidth(5);
+		mPaint.setStrokeWidth(10);
 
 		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
 
@@ -87,7 +99,7 @@ public class EasyPaint extends GraphicsActivity implements
 
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-			alert.setTitle(R.string.app_name + " - " + R.string.about);
+			alert.setTitle(R.string.app_name);
 
 			alert.setMessage(R.string.app_description);
 
@@ -220,18 +232,15 @@ public class EasyPaint extends GraphicsActivity implements
 		super.onCreateOptionsMenu(menu);
 
 		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size).setIcon(
-				R.drawable.size);
-		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase);
-		menu.add(0, CLEAR_ALL, 0, R.string.clear_all);
-		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(
-				R.drawable.size);
-		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(
-				R.drawable.emboss);
-		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur);
-		menu.add(0, SAVE, 0, R.string.save);
+		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size).setIcon(R.drawable.size).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, CLEAR_ALL, 0, R.string.clear_all).setIcon(R.drawable.clear_all).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(R.drawable.size).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(R.drawable.emboss).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, SAVE, 0, R.string.save).setIcon(R.drawable.save).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		menu.add(0, SHARE, 0, R.string.share).setIcon(R.drawable.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, ABOUT, 0, R.string.about);
+		menu.add(0, ABOUT, 0, R.string.about).setIcon(R.drawable.about).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		/****
 		 * Is this the mechanism to extend with filter effects? Intent intent =
@@ -276,13 +285,13 @@ public class EasyPaint extends GraphicsActivity implements
 			final AlertDialog alertDialog = builder.create();
 			alertDialog.show();
 			SeekBar sb = (SeekBar) layout.findViewById(R.id.seekBar1);
-			sb.setProgress(5);
+			sb.setProgress(10);
 			final Button done = (Button) layout.findViewById(R.id.select_size);
 			final TextView txt = (TextView) layout
 					.findViewById(R.id.size_value);
 			txt.setText(String
 					.format(getResources().getString(
-							R.string.default_brush_size_is), 5));
+							R.string.default_brush_size_is), 10));
 			sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
@@ -318,20 +327,20 @@ public class EasyPaint extends GraphicsActivity implements
 			return true;
 		case ERASE_MENU_ID:
 			LayoutInflater inflater_e = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View layout_e = inflater_e.inflate(R.layout.brush,
+			View layout_e = inflater_e.inflate(R.layout.eraser,
 					(ViewGroup) findViewById(R.id.root));
 			AlertDialog.Builder builder_e = new AlertDialog.Builder(this)
 					.setView(layout_e);
 			final AlertDialog alertDialog_e = builder_e.create();
 			alertDialog_e.show();
 			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.seekBar1);
-			sb_e.setProgress(5);
+			sb_e.setProgress(10);
 			final Button done_e = (Button) layout_e.findViewById(R.id.select_size);
 			final TextView txt_e = (TextView) layout_e
 					.findViewById(R.id.size_value);
 			txt_e.setText(String
 					.format(getResources().getString(
-							R.string.default_eraser_size_is), 5));
+							R.string.default_eraser_size_is), 10));
 			sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
@@ -401,7 +410,7 @@ public class EasyPaint extends GraphicsActivity implements
 			try {
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-				alert.setTitle(R.string.app_name + " - " + R.string.about);
+				alert.setTitle(R.string.about);
 
 				alert.setMessage(R.string.app_description);
 

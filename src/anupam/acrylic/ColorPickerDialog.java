@@ -54,9 +54,9 @@ public class ColorPickerDialog extends Dialog {
     }
 
     private static class ColorPickerView extends View {
-        private static final int CENTER_X = 150;
-        private static final int CENTER_Y = 150;
-        private static final int CENTER_RADIUS = 60;
+        private static final int CENTER_X = 200;
+        private static final int CENTER_Y = 200;
+        private static final int CENTER_RADIUS = 100;
         private Paint mPaint;
         private Paint mCenterPaint;
         private final int[] mColors;
@@ -80,7 +80,7 @@ public class ColorPickerDialog extends Dialog {
 
             mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mCenterPaint.setColor(color);
-            mCenterPaint.setStrokeWidth(5);
+            mCenterPaint.setStrokeWidth(10);
         }
 
         @Override

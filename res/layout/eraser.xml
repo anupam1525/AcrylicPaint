@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/choose_brush_width"
+        android:text="@string/choose_eraser_width"
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
 

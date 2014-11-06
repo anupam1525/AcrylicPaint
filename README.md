@@ -8,7 +8,7 @@ Credits
 -------
 * [Anupam Shrivastava](https://github.com/anupam1525) - Original author (disappeared)
 * [Valerio Bozzolan](https://github.com/valerio-bozzolan) - Revival of the project
-* Marco Gagino - Icons and support
+* [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and support
 
 And thanks to all the contributors!
 

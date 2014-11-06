@@ -27,7 +27,7 @@
     <string name="no_way_to_share">Can\'t locate an app to share with…</string>
     <string name="normal">Pencil</string>
     <string name="your_selected_eraser_size_is">Your selected eraser size is: %1$s</string>
-    <string name="default_eraser_size_is">Default erase size is: %1$s</string>
+    <string name="default_eraser_size_is">Default eraser size is: %1$s</string>
     <string name="error_eraser_size">Please select at least &quot;1&quot; as eraser size.</string>
     <string name="choose_eraser_width">Choose your Eraser width</string>
 
