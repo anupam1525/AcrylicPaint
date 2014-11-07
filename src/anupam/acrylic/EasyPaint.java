@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package anupam.acrylic;
 
@@ -43,6 +43,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -64,21 +65,23 @@ public class EasyPaint extends GraphicsActivity implements
 	private Paint mPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
-	
+
 	public static int DEFAULT_BRUSH_SIZE = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//it removes the title from the actionbar(more space for icons?)
-		//this.getActionBar().setDisplayShowTitleEnabled(false); 
-		
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		//this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION); 
-		//it removes the navigation bar, but you can't paint without it and once it is shown again, it doesn't hide again
-		
+		// it removes the title from the actionbar(more space for icons?)
+		// this.getActionBar().setDisplayShowTitleEnabled(false);
+
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		// this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		// it removes the navigation bar, but you can't paint without it and
+		// once it is shown again, it doesn't hide again
+
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		setContentView(new MyView(this));
 
@@ -96,22 +99,17 @@ public class EasyPaint extends GraphicsActivity implements
 		mBlur = new BlurMaskFilter(5, BlurMaskFilter.Blur.NORMAL);
 
 		if (isFirstTime()) {
-
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 			alert.setTitle(R.string.app_name);
-
 			alert.setMessage(R.string.app_description);
-
 			alert.setNegativeButton(R.string.continue_fuck,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
-
 							Toast.makeText(getApplicationContext(),
 									R.string.here_is_your_canvas,
 									Toast.LENGTH_SHORT).show();
-
 						}
 					});
 
@@ -129,10 +127,99 @@ public class EasyPaint extends GraphicsActivity implements
 
 	public class MyView extends View {
 
+		private class SuperPath extends Path {
+			private Integer idPointer;
+			private float lastX;
+			private float lastY;
+
+			SuperPath() {
+				this.idPointer = null;
+			}
+
+			public void setLastXY(float x, float y) {
+				this.lastX = x;
+				this.lastY = y;
+			}
+
+			public float getLastX() {
+				return lastX;
+			}
+
+			public float getLastY() {
+				return lastY;
+			}
+
+			public void touchStart(float x, float y) {
+				this.reset();
+				this.moveTo(x, y);
+				this.lastX = x;
+				this.lastY = y;
+			}
+
+			public void touchMove(float x, float y) {
+				float dx = Math.abs(x - lastX);
+				float dy = Math.abs(y - lastY);
+				if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+					this.quadTo(lastX, lastY, (x + lastX) / 2, (y + lastY) / 2);
+					lastX = x;
+					lastY = y;
+				}
+			}
+
+			public boolean isFreeFromPointer() {
+				return idPointer == null;
+			}
+
+			public boolean isRelatedToPointer(int idPointer) {
+				return this.idPointer != null
+						&& (int) this.idPointer == idPointer;
+			}
+
+			public void freeFromPointer() {
+				idPointer = null;
+			}
+
+			public void setRelatedPointer(int idPointer) {
+				this.idPointer = idPointer;
+			}
+		}
+
+		private class SuperMultiPathManager {
+			public SuperPath[] superMultiPaths;
+
+			SuperMultiPathManager(int points) {
+				superMultiPaths = new SuperPath[points];
+				for (int i = 0; i < points; i++) {
+					superMultiPaths[i] = new SuperPath();
+				}
+			}
+
+			public SuperPath getSuperPathRelatedToPointer(int id) {
+				for (int i = 0; i < superMultiPaths.length; i++) {
+					if (superMultiPaths[i].isRelatedToPointer(id)) {
+						return superMultiPaths[i];
+					}
+				}
+				return null;
+			}
+
+			public SuperPath addSuperPathRelatedToPointer(int id) {
+				for (int i = 0; i < superMultiPaths.length; i++) {
+					if (superMultiPaths[i].isFreeFromPointer()) {
+						superMultiPaths[i].setRelatedPointer(id);
+						return superMultiPaths[i];
+					}
+				}
+				Log.e("anupam", "anupamdio Tutte le dita usate???");
+				return null;
+			}
+		}
+
 		private Bitmap mBitmap;
 		private Canvas mCanvas;
 		private Path mPath;
 		private Paint mBitmapPaint;
+		private SuperMultiPathManager superMultiPathManager;
 
 		public MyView(Context c) {
 			super(c);
@@ -148,6 +235,7 @@ public class EasyPaint extends GraphicsActivity implements
 			mCanvas = new Canvas(mBitmap);
 			mPath = new Path();
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+			superMultiPathManager = new SuperMultiPathManager(5);
 		}
 
 		@Override
@@ -158,60 +246,116 @@ public class EasyPaint extends GraphicsActivity implements
 		@Override
 		protected void onDraw(Canvas canvas) {
 			canvas.drawColor(0xFFFFFFFF);
-
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-
-			canvas.drawPath(mPath, mPaint);
-		}
-
-		private float mX, mY;
-		private static final float TOUCH_TOLERANCE = 4;
-
-		private void touch_start(float x, float y) {
-			mPath.reset();
-			mPath.moveTo(x, y);
-			mX = x;
-			mY = y;
-		}
-
-		private void touch_move(float x, float y) {
-			float dx = Math.abs(x - mX);
-			float dy = Math.abs(y - mY);
-			if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-				mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-				mX = x;
-				mY = y;
+			for(int i=0; i<superMultiPathManager.superMultiPaths.length; i++) {
+				canvas.drawPath(superMultiPathManager.superMultiPaths[i], mPaint);
 			}
 		}
 
-		private void touch_up() {
-			mPath.lineTo(mX, mY);
-			// commit the path to our offscreen
-			mCanvas.drawPath(mPath, mPaint);
-			// kill this so we don't double draw
-			mPath.reset();
-		}
+		private static final float TOUCH_TOLERANCE = 4;
+
+		/*
+		 * private void touch_start(float x, float y) { mPath.reset();
+		 * mPath.moveTo(x, y); mX = x; mY = y; }
+		 */
+
+		/*
+		 * private void touch_move(float x, float y) { float dx = Math.abs(x -
+		 * mX); float dy = Math.abs(y - mY); if (dx >= TOUCH_TOLERANCE || dy >=
+		 * TOUCH_TOLERANCE) { mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+		 * mX = x; mY = y; } }
+		 */
+
+		/*
+		 * private void touch_up() { mPath.lineTo(mX, mY); // commit the path to
+		 * our offscreen mCanvas.drawPath(mPath, mPaint); // kill this so we
+		 * don't double draw mPath.reset(); }
+		 */
 
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
-			float x = event.getX();
-			float y = event.getY();
+			SuperPath superPath;
+			int index = event.getActionIndex();
+			int id = event.getPointerId(index);
+			int qualcosa = event.getActionMasked();
+			if (qualcosa == MotionEvent.ACTION_DOWN
+					|| qualcosa == MotionEvent.ACTION_POINTER_DOWN) {
+				Log.d("anupam", "anupamdio GIÙ " + id);
+				superPath = superMultiPathManager
+						.addSuperPathRelatedToPointer(id);
+				if (superPath == null) {
+					Log.e("asd", "anupamdio ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+				}
+				superPath.touchStart(event.getX(index), event.getY(index));
+			} else if (qualcosa == MotionEvent.ACTION_MOVE) {
+				for (int i = 0; i < event.getPointerCount(); i++) {
+					id = event.getPointerId(i);
+					index = event.findPointerIndex(id);
+					Log.d("asd", "anupamdio moved " + id + " (" + event.getX(index) + ";" + event.getY(index) + ")");
+					superPath = superMultiPathManager.getSuperPathRelatedToPointer(id);
+					if (superPath == null) {
+						Log.e("asd", "anupamdio ERRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+					}
+					superPath.touchMove(event.getX(index), event.getY(index));
+				}
+			} else if (qualcosa == MotionEvent.ACTION_UP
+					|| qualcosa == MotionEvent.ACTION_POINTER_UP
+					|| qualcosa == MotionEvent.ACTION_CANCEL) {
+				Log.d("anupam", "anupamdio ALZATO " + id);
+				superPath = superMultiPathManager
+						.getSuperPathRelatedToPointer(id);
+				superPath.lineTo(superPath.getLastX(), superPath.getLastY());
+				// commit the path to our offscreen
+				mCanvas.drawPath(superPath, mPaint);
+				// kill this so we don't double draw
+				superPath.reset();
 
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				touch_start(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_MOVE:
-				touch_move(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_UP:
-				touch_up();
-				invalidate();
-				break;
+				superPath.freeFromPointer();
 			}
+			invalidate();
 			return true;
+			/*
+			 * final int action = event.getAction(); switch (action &
+			 * MotionEvent.ACTION_MASK) { case MotionEvent.ACTION_DOWN: { final
+			 * float x = ev.getX(); final float y = ev.getY();
+			 * 
+			 * mLastTouchX = x; mLastTouchY = y;
+			 * 
+			 * // Save the ID of this pointer mActivePointerId =
+			 * event.getPointerId(0); break; }
+			 * 
+			 * case MotionEvent.ACTION_MOVE: { // Find the index of the active
+			 * pointer and fetch its position final int pointerIndex =
+			 * ev.findPointerIndex(mActivePointerId); final float x =
+			 * ev.getX(pointerIndex); final float y = ev.getY(pointerIndex);
+			 * 
+			 * final float dx = x - mLastTouchX; final float dy = y -
+			 * mLastTouchY;
+			 * 
+			 * mPosX += dx; mPosY += dy;
+			 * 
+			 * mLastTouchX = x; mLastTouchY = y;
+			 * 
+			 * invalidate(); break; }
+			 * 
+			 * case MotionEvent.ACTION_UP: { mActivePointerId =
+			 * INVALID_POINTER_ID; break; }
+			 * 
+			 * case MotionEvent.ACTION_CANCEL: { mActivePointerId =
+			 * INVALID_POINTER_ID; break; }
+			 * 
+			 * case MotionEvent.ACTION_POINTER_UP: { // Extract the index of the
+			 * pointer that left the touch sensor final int pointerIndex =
+			 * (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >>
+			 * MotionEvent.ACTION_POINTER_INDEX_SHIFT; final int pointerId =
+			 * ev.getPointerId(pointerIndex); if (pointerId == mActivePointerId)
+			 * { // This was our active pointer going up. Choose a new // active
+			 * pointer and adjust accordingly. final int newPointerIndex =
+			 * pointerIndex == 0 ? 1 : 0; mLastTouchX =
+			 * ev.getX(newPointerIndex); mLastTouchY = ev.getY(newPointerIndex);
+			 * mActivePointerId = ev.getPointerId(newPointerIndex); } break; } }
+			 * return true;
+			 */
 		}
 	}
 
@@ -230,16 +374,29 @@ public class EasyPaint extends GraphicsActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size).setIcon(R.drawable.size).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, CLEAR_ALL, 0, R.string.clear_all).setIcon(R.drawable.clear_all).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(R.drawable.size).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss).setIcon(R.drawable.emboss).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SAVE, 0, R.string.save).setIcon(R.drawable.save).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SHARE, 0, R.string.share).setIcon(R.drawable.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, ABOUT, 0, R.string.about).setIcon(R.drawable.about).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size)
+				.setIcon(R.drawable.size)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, CLEAR_ALL, 0, R.string.clear_all)
+				.setIcon(R.drawable.clear_all)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(R.drawable.size)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss)
+				.setIcon(R.drawable.emboss)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, SAVE, 0, R.string.save).setIcon(R.drawable.save)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, SHARE, 0, R.string.share).setIcon(R.drawable.share)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, ABOUT, 0, R.string.about).setIcon(R.drawable.about)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		/****
 		 * Is this the mechanism to extend with filter effects? Intent intent =
@@ -288,20 +445,24 @@ public class EasyPaint extends GraphicsActivity implements
 			final Button done = (Button) layout.findViewById(R.id.select_size);
 			final TextView txt = (TextView) layout
 					.findViewById(R.id.size_value);
-			txt.setText(String
-					.format(getResources().getString(
-							R.string.default_size_is), getStrokeSize()));
+			txt.setText(String.format(
+					getResources().getString(R.string.default_size_is),
+					getStrokeSize()));
 			sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
 					// Do something here with new value
 					mPaint.setStrokeWidth(progress);
-					txt.setText(String.format(getResources().getString(R.string.your_selected_size_is), progress));
+					txt.setText(String.format(
+							getResources().getString(
+									R.string.your_selected_size_is), progress));
 				}
+
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
 				}
+
 				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
@@ -323,22 +484,27 @@ public class EasyPaint extends GraphicsActivity implements
 			alertDialog_e.show();
 			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.seekBar1);
 			sb_e.setProgress(getStrokeSize());
-			final Button done_e = (Button) layout_e.findViewById(R.id.select_size);
+			final Button done_e = (Button) layout_e
+					.findViewById(R.id.select_size);
 			final TextView txt_e = (TextView) layout_e
 					.findViewById(R.id.size_value);
-			txt_e.setText(String
-					.format(getResources().getString(
-							R.string.default_size_is), getStrokeSize()));
+			txt_e.setText(String.format(
+					getResources().getString(R.string.default_size_is),
+					getStrokeSize()));
 			sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
 					// Do something here with new value
 					mPaint.setStrokeWidth(progress);
-					txt_e.setText(String.format(getResources().getString(R.string.your_selected_size_is), progress));
+					txt_e.setText(String.format(
+							getResources().getString(
+									R.string.your_selected_size_is), progress));
 				}
+
 				public void onStartTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
 				}
+
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
 				}
@@ -401,8 +567,7 @@ public class EasyPaint extends GraphicsActivity implements
 	}
 
 	/**
-	 * This takes the screenshot of the whole screen.
-	 * Is this a good thing?
+	 * This takes the screenshot of the whole screen. Is this a good thing?
 	 */
 	private File takeScreenshot(boolean showToast) {
 		View v = getWindow().getDecorView();
