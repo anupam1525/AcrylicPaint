@@ -77,14 +77,14 @@ public class EasyPaint extends GraphicsActivity implements
 		// it removes the title from the actionbar(more space for icons?)
 		// this.getActionBar().setDisplayShowTitleEnabled(false);
 
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		// this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		// it removes the navigation bar, but you can't paint without it and
 		// once it is shown again, it doesn't hide again
 
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(new MyView(this));
 
 		mPaint = new Paint();
@@ -443,17 +443,10 @@ public class EasyPaint extends GraphicsActivity implements
 			}
 			break;
 		case R.id.about_menu:
-			try {
-				AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-				alert.setTitle(R.string.about);
-				alert.setMessage(R.string.app_description);
-				alert.setPositiveButton(R.string.ok, null);
-				alert.show();
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-
+			Intent intentAbout = new Intent(EasyPaint.this,
+					AboutActivity.class);
+			startActivity(intentAbout);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

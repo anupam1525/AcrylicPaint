@@ -11,7 +11,7 @@
     <string name="clear_all">Pulisci tutto</string>
     <string name="save">Salva</string>
     <string name="share">Condividi</string>
-    <string name="about">Informazioni</string>
+    <string name="about">Info</string>
     <string name="default_size_is">Dimensione predefinita: %1$s</string>
     <string name="your_selected_size_is">Dimensione scelta: %1$s</string>
     <string name="choose_width">Scegli dimensione:</string>
@@ -25,5 +25,30 @@
     <string name="share_text_template">Condividi come testo</string>
     <string name="no_way_to_share">Non ci sono app con cui condividere il tuo lavoro…</string>
     <string name="normal">Matita</string>
+    <string name="title_activity_about">Informazioni</string>
+    <string name="about_description">
+<![CDATA[
+<h1>Acrylic Paint</h1>
+<p>Grazie per aver scelto Acrylic Paint!<br />Un <b>software libero</b> che… libera la tua creatività!</p>
 
+<h2>Crediti</h2>
+<p>Ringraziamenti speciali a:<br>
+<b><a href="https://github.com/anupam1525>Anupam Shrivastava</a></b> per la prima versione dell'app. È ora inattivo.<br>
+<b><a href="https://github.com/valerio-bozzolan">Valerio Bozzolan</a></b> per l'intensa revisione al codice sorgente. È l'attuale manutentore di questa versione.<br>
+<b><a href="https://github.com/marcogagino-22">Marco Gagino</a></b> per il profondo restyling e grande spirito di collaborazione!
+</p>
+
+<h2>Licenze</h2>
+<p>Questa versione di Acrylic Paint e il relativo codice sorgente sono distribuiti da <a href="mailto:valerio.bozzolan@studenti.polito.it?subject=AcrylicPaint">Valerio Bozzolan</a> sotto i
+termini della licenza <i>GNU GPLv3+</i>.
+Ciò è per permettere a chiunque di usare, studiare, migliorare e ricondividere quest\'app con <b>qualunque mezzo</b> e per <b>qualsiasi scopo</b>: A patto di mantenere sempre questi diritti.</p>
+<p>Quest\'applicazione è rilasciata <b>nella speranza che sia utile a tutti</b> ma senza alcuna garanzia (nè garanzie di commerciabilità).</p>
+
+<h2>Note</h2>
+<p>Se ti accorgi di qualche difetto o se hai idee, usa il <a href="https://github.com/valerio-bozzolan/AcrylicPaint/issues">bug tracker</a>.</p>
+<p>Contribuisci al codice sorgente su <a href="https://github.com/valerio-bozzolan/AcrylicPaint">valerio-bozzolan/AcrylicPaint</a> @GitHub.</p>
+<p>Leggi il file <a href="https://github.com/valerio-bozzolan/AcrylicPaint/blob/master/README.md">README</a> per maggiori informazioni.</p>
+
+<p>Divertiti!</p>
+    ]]></string>
 </resources>

@@ -8,13 +8,12 @@ Credits
 -------
 * [Anupam Shrivastava](https://github.com/anupam1525) - Original author (disappeared)
 * [Valerio Bozzolan](https://github.com/valerio-bozzolan) - Revival of the project
-* [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and support
+* [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and heavy support
 
 And thanks to all the contributors!
 
 Licenses
 --------
-
 * [Android™ API demos](http://developer.android.com/samples/index.html) - Originally released under the Apache 2.0 license
 * [Acrylic Paint anupam1525](https://github.com/anupam1525/AcrylicPaint) - Originally released under the Apache 2.0 license
 * [Acrylic Paint valerio-bozzolan](https://github.com/valerio-bozzolan/AcrylicPaint) - Upgraded to the GNU General Public License
@@ -28,7 +27,6 @@ the Free Software Foundation, either version 3 of the License, or
 
 Disclaimer
 ----------
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the

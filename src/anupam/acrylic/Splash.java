@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package anupam.acrylic;
 
@@ -29,8 +29,8 @@ public class Splash extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.main);
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		Thread t = new Thread() {
 
@@ -38,12 +38,9 @@ public class Splash extends Activity {
 				try {
 					Thread.sleep(1000);
 
-					Intent i = new Intent();
-					i.setClassName("anupam.acrylic",
-							"anupam.acrylic.EasyPaint");
-					startActivity(i);
+					startActivity(new Intent().setClassName("anupam.acrylic",
+							"anupam.acrylic.EasyPaint"));
 					finish();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
