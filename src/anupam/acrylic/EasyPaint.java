@@ -62,8 +62,9 @@ import android.widget.Toast;
 public class EasyPaint extends GraphicsActivity implements
 		ColorPickerDialog.OnColorChangedListener {
 
-	public static int MAX_POINTERS = 10;
 	public static int DEFAULT_BRUSH_SIZE = 10;
+	private static int MAX_POINTERS = 10;
+	private static final float TOUCH_TOLERANCE = 4;
 
 	private Paint mPaint;
 	private MaskFilter mEmboss;
@@ -128,12 +129,17 @@ public class EasyPaint extends GraphicsActivity implements
 
 	public class MyView extends View {
 
-		private class SuperPath extends Path {
+		private Bitmap mBitmap;
+		private Canvas mCanvas;
+		private Paint mBitmapPaint;
+		private MultiLinePathManager multiLinePathManager;
+
+		private class LinePath extends Path {
 			private Integer idPointer;
 			private float lastX;
 			private float lastY;
 
-			SuperPath() {
+			LinePath() {
 				this.idPointer = null;
 			}
 
@@ -162,58 +168,53 @@ public class EasyPaint extends GraphicsActivity implements
 				}
 			}
 
-			public boolean isFreeFromPointer() {
+			public boolean isDisassociatedFromPointer() {
 				return idPointer == null;
 			}
 
-			public boolean isRelatedToPointer(int idPointer) {
+			public boolean isAssociatedToPointer(int idPointer) {
 				return this.idPointer != null
 						&& (int) this.idPointer == idPointer;
 			}
 
-			public void freeFromPointer() {
+			public void disassociateFromPointer() {
 				idPointer = null;
 			}
 
-			public void setRelatedPointer(int idPointer) {
+			public void associateToPointer(int idPointer) {
 				this.idPointer = idPointer;
 			}
 		}
 
-		private class SuperMultiPathManager {
-			public SuperPath[] superMultiPaths;
+		private class MultiLinePathManager {
+			public LinePath[] superMultiPaths;
 
-			SuperMultiPathManager(int points) {
-				superMultiPaths = new SuperPath[points];
-				for (int i = 0; i < points; i++) {
-					superMultiPaths[i] = new SuperPath();
+			MultiLinePathManager(int maxPointers) {
+				superMultiPaths = new LinePath[maxPointers];
+				for (int i = 0; i < maxPointers; i++) {
+					superMultiPaths[i] = new LinePath();
 				}
 			}
 
-			public SuperPath getSuperPathRelatedToPointer(int id) {
+			public LinePath findLinePathFromPointer(int idPointer) {
 				for (int i = 0; i < superMultiPaths.length; i++) {
-					if (superMultiPaths[i].isRelatedToPointer(id)) {
+					if (superMultiPaths[i].isAssociatedToPointer(idPointer)) {
 						return superMultiPaths[i];
 					}
 				}
 				return null;
 			}
 
-			public SuperPath addSuperPathRelatedToPointer(int id) {
+			public LinePath addLinePathWithPointer(int idPointer) {
 				for (int i = 0; i < superMultiPaths.length; i++) {
-					if (superMultiPaths[i].isFreeFromPointer()) {
-						superMultiPaths[i].setRelatedPointer(id);
+					if (superMultiPaths[i].isDisassociatedFromPointer()) {
+						superMultiPaths[i].associateToPointer(idPointer);
 						return superMultiPaths[i];
 					}
 				}
 				return null;
 			}
 		}
-
-		private Bitmap mBitmap;
-		private Canvas mCanvas;
-		private Paint mBitmapPaint;
-		private SuperMultiPathManager superMultiPathManager;
 
 		public MyView(Context c) {
 			super(c);
@@ -221,14 +222,11 @@ public class EasyPaint extends GraphicsActivity implements
 			Display display = getWindowManager().getDefaultDisplay();
 			Point size = new Point();
 			display.getSize(size);
-			int width = size.x;
-			int height = size.y;
-
-			mBitmap = Bitmap.createBitmap(width, height,
+			mBitmap = Bitmap.createBitmap(size.x, size.y,
 					Bitmap.Config.ARGB_8888);
 			mCanvas = new Canvas(mBitmap);
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-			superMultiPathManager = new SuperMultiPathManager(MAX_POINTERS);
+			multiLinePathManager = new MultiLinePathManager(MAX_POINTERS);
 		}
 
 		@Override
@@ -240,111 +238,68 @@ public class EasyPaint extends GraphicsActivity implements
 		protected void onDraw(Canvas canvas) {
 			canvas.drawColor(0xFFFFFFFF);
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-			for (int i = 0; i < superMultiPathManager.superMultiPaths.length; i++) {
-				canvas.drawPath(superMultiPathManager.superMultiPaths[i],
-						mPaint);
+			for (int i = 0; i < multiLinePathManager.superMultiPaths.length; i++) {
+				canvas.drawPath(multiLinePathManager.superMultiPaths[i], mPaint);
 			}
 		}
 
-		private static final float TOUCH_TOLERANCE = 4;
-
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
-			SuperPath superPath;
+			LinePath linePath;
 			int index;
 			int id;
-			int qualcosa = event.getActionMasked();
-			if (qualcosa == MotionEvent.ACTION_DOWN
-					|| qualcosa == MotionEvent.ACTION_POINTER_DOWN) {
+			int eventMasked = event.getActionMasked();
+			switch (eventMasked) {
+			case MotionEvent.ACTION_DOWN:
+			case MotionEvent.ACTION_POINTER_DOWN:
 				index = event.getActionIndex();
 				id = event.getPointerId(index);
-				superPath = superMultiPathManager
-						.addSuperPathRelatedToPointer(id);
-				if (superPath != null) {
-					superPath.touchStart(event.getX(index), event.getY(index));
+				linePath = multiLinePathManager.addLinePathWithPointer(id);
+				if (linePath != null) {
+					linePath.touchStart(event.getX(index), event.getY(index));
 				} else {
 					Log.e("anupam", "Too many fingers!");
 				}
-			} else if (qualcosa == MotionEvent.ACTION_MOVE) {
+				break;
+			case MotionEvent.ACTION_MOVE:
 				for (int i = 0; i < event.getPointerCount(); i++) {
 					id = event.getPointerId(i);
 					index = event.findPointerIndex(id);
-					superPath = superMultiPathManager
-							.getSuperPathRelatedToPointer(id);
-					if (superPath != null) {
-						superPath.touchMove(event.getX(index),
-								event.getY(index));
+					linePath = multiLinePathManager.findLinePathFromPointer(id);
+					if (linePath != null) {
+						linePath.touchMove(event.getX(index), event.getY(index));
 					}
 				}
-			} else if (qualcosa == MotionEvent.ACTION_UP
-					|| qualcosa == MotionEvent.ACTION_POINTER_UP
-					|| qualcosa == MotionEvent.ACTION_CANCEL) {
+				break;
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_POINTER_UP:
+			case MotionEvent.ACTION_CANCEL:
 				index = event.getActionIndex();
 				id = event.getPointerId(index);
-				superPath = superMultiPathManager
-						.getSuperPathRelatedToPointer(id);
-				if (superPath != null) {
-					superPath
-							.lineTo(superPath.getLastX(), superPath.getLastY());
-					// commit the path to our offscreen
-					mCanvas.drawPath(superPath, mPaint);
-					// kill this so we don't double draw
-					superPath.reset();
+				linePath = multiLinePathManager.findLinePathFromPointer(id);
+				if (linePath != null) {
+					linePath.lineTo(linePath.getLastX(), linePath.getLastY());
 
-					superPath.freeFromPointer();
+					// Commit the path to our offscreen
+					mCanvas.drawPath(linePath, mPaint);
+
+					// Kill this so we don't double draw
+					linePath.reset();
+
+					// Allow this LinePath to be associated to another idPointer
+					linePath.disassociateFromPointer();
 				}
+				break;
 			}
 			invalidate();
 			return true;
 		}
 	}
 
-	private static final int COLOR_MENU_ID = Menu.FIRST;
-	private static final int SIZE_MENU_ID = Menu.FIRST + 1;
-	private static final int ERASE_MENU_ID = Menu.FIRST + 2;
-	private static final int CLEAR_ALL = Menu.FIRST + 3;
-	private static final int NORMAL_BRUSH = Menu.FIRST + 4;
-	private static final int EMBOSS_MENU_ID = Menu.FIRST + 5;
-	private static final int BLUR_MENU_ID = Menu.FIRST + 6;
-	private static final int SAVE = Menu.FIRST + 7;
-	private static final int SHARE = Menu.FIRST + 8;
-	private static final int ABOUT = Menu.FIRST + 9;
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-
-		menu.add(0, COLOR_MENU_ID, 0, R.string.color).setIcon(R.drawable.color)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SIZE_MENU_ID, 0, R.string.brush_size)
-				.setIcon(R.drawable.size)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, ERASE_MENU_ID, 0, R.string.erase).setIcon(R.drawable.erase)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, CLEAR_ALL, 0, R.string.clear_all)
-				.setIcon(R.drawable.clear_all)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, NORMAL_BRUSH, 0, R.string.normal).setIcon(R.drawable.size)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, EMBOSS_MENU_ID, 0, R.string.emboss)
-				.setIcon(R.drawable.emboss)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, BLUR_MENU_ID, 0, R.string.blur).setIcon(R.drawable.blur)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SAVE, 0, R.string.save).setIcon(R.drawable.save)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, SHARE, 0, R.string.share).setIcon(R.drawable.share)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		menu.add(0, ABOUT, 0, R.string.about).setIcon(R.drawable.about)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		/****
-		 * Is this the mechanism to extend with filter effects? Intent intent =
-		 * new Intent(null, getIntent().getData());
-		 * intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
-		 * menu.addIntentOptions( Menu.ALTERNATIVE, 0, new ComponentName(this,
-		 * NotesList.class), null, intent, 0, null);
-		 *****/
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
@@ -360,19 +315,19 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setAlpha(0xFF);
 
 		switch (item.getItemId()) {
-		case NORMAL_BRUSH:
+		case R.id.normal_brush_menu:
 			mPaint.setMaskFilter(null);
 			return true;
-		case COLOR_MENU_ID:
+		case R.id.color_menu:
 			new ColorPickerDialog(this, this, mPaint.getColor()).show();
 			return true;
-		case EMBOSS_MENU_ID:
+		case R.id.emboss_menu:
 			mPaint.setMaskFilter(mEmboss);
 			return true;
-		case BLUR_MENU_ID:
+		case R.id.blur_menu:
 			mPaint.setMaskFilter(mBlur);
 			return true;
-		case SIZE_MENU_ID:
+		case R.id.size_menu:
 			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View layout = inflater.inflate(R.layout.brush,
 					(ViewGroup) findViewById(R.id.root));
@@ -414,7 +369,7 @@ public class EasyPaint extends GraphicsActivity implements
 				}
 			});
 			return true;
-		case ERASE_MENU_ID:
+		case R.id.erase_menu:
 			LayoutInflater inflater_e = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View layout_e = inflater_e.inflate(R.layout.brush,
 					(ViewGroup) findViewById(R.id.root));
@@ -457,7 +412,7 @@ public class EasyPaint extends GraphicsActivity implements
 			// mPaint.setColor(bgColor);
 			mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 			return true;
-		case CLEAR_ALL:
+		case R.id.clear_all_menu:
 			Intent intent = getIntent();
 			overridePendingTransition(0, 0);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -465,10 +420,10 @@ public class EasyPaint extends GraphicsActivity implements
 			overridePendingTransition(0, 0);
 			startActivity(intent);
 			return true;
-		case SAVE:
+		case R.id.save_menu:
 			takeScreenshot(true);
 			break;
-		case SHARE:
+		case R.id.share_menu:
 			File screenshotPath = takeScreenshot(false);
 			Intent i = new Intent();
 			i.setAction(Intent.ACTION_SEND);
@@ -487,7 +442,7 @@ public class EasyPaint extends GraphicsActivity implements
 						Toast.LENGTH_LONG).show();
 			}
 			break;
-		case ABOUT:
+		case R.id.about_menu:
 			try {
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 

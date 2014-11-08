@@ -25,4 +25,5 @@
     <string name="share_text_template">Condividi come testo</string>
     <string name="no_way_to_share">Non ci sono app con cui condividere il tuo lavoro…</string>
     <string name="normal">Matita</string>
+
 </resources>

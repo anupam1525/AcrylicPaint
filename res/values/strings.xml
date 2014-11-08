@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Acrylic Paint</string>
-	<string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the strong support. Thanks to all the contributors!</string>
+    <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the strong support. Thanks to all the contributors!</string>
     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
     <string name="color">Color</string>
     <string name="emboss">Bold</string>
@@ -25,4 +26,5 @@
     <string name="share_text_template">Share as text</string>
     <string name="no_way_to_share">Can\'t locate an app to share with…</string>
     <string name="normal">Pencil</string>
+
 </resources>

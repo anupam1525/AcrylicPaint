@@ -43,7 +43,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/size_value"
         android:text="@string/select" >
-
     </Button>
 
 </RelativeLayout>
