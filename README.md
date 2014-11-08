@@ -8,7 +8,7 @@ Credits
 -------
 * [Anupam Shrivastava](https://github.com/anupam1525) - Original author (disappeared)
 * [Valerio Bozzolan](https://github.com/valerio-bozzolan) - Revival of the project
-* [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and heavy support
+* [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and massive support
 
 And thanks to all the contributors!
 
@@ -18,7 +18,7 @@ Licenses
 * [Acrylic Paint anupam1525](https://github.com/anupam1525/AcrylicPaint) - Originally released under the Apache 2.0 license
 * [Acrylic Paint valerio-bozzolan](https://github.com/valerio-bozzolan/AcrylicPaint) - Upgraded to the GNU General Public License
 
-Every line of this app it's "upgraded" from the Apache 2.0 license to the **GPLv3+ license**! Read more about "license upgrading" [here](https://www.gnu.org/licenses/quick-guide-gplv3.html#new-compatible-licenses)". (If I have done some errors during the license upgrade process, please tell me about how to upgrade the license of this app in the bug report...)
+Every line of this app it's "upgraded" from the Apache 2.0 license to the **GPLv3+ license**! Read more about "license upgrading" [here](https://www.gnu.org/licenses/quick-guide-gplv3.html#new-compatible-licenses). (If I have done some errors during the license upgrade process, please tell me about how to upgrade the license of this app in the bug report...)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

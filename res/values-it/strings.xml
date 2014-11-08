@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    
     <string name="app_description">Acrylic Paint è uno strumento che ti aiuta a colorare la tua immaginazione.\n\nScegli un colore e libera la tua fantasia.\n\nPremi il tasto menù per più opzioni!\n\nDivertiti :)\n\nQuest\'app è un software libero rilasciato sotto i termini della licenza GNU General Public License.\nUn ringraziamento all\'autore originale Anupam Shrivastava, a Valerio Bozzolan per la riesumazione del progetto e a Marco Gagino per il sostegno spaventoso. Grazie a tutti i contributori!</string>
     <string name="here_is_your_canvas">Qui c\'è la tua tela. Inizia a colorare!</string>
     <string name="color">Colore</string>
@@ -29,7 +30,7 @@
     <string name="about_description">
 <![CDATA[
 <h1>Acrylic Paint</h1>
-<p>Grazie per aver scelto Acrylic Paint!<br />Un <b>software libero</b> che… libera la tua creatività!</p>
+<p>Grazie per aver scelto Acrylic Paint!<br />Un <b>software libero</b> che libera la tua creatività!</p>
 
 <h2>Crediti</h2>
 <p>Ringraziamenti speciali a:<br>
@@ -41,8 +42,8 @@
 <h2>Licenze</h2>
 <p>Questa versione di Acrylic Paint e il relativo codice sorgente sono distribuiti da <a href="mailto:valerio.bozzolan@studenti.polito.it?subject=AcrylicPaint">Valerio Bozzolan</a> sotto i
 termini della licenza <i>GNU GPLv3+</i>.
-Ciò è per permettere a chiunque di usare, studiare, migliorare e ricondividere quest\'app con <b>qualunque mezzo</b> e per <b>qualsiasi scopo</b>: A patto di mantenere sempre questi diritti.</p>
-<p>Quest\'applicazione è rilasciata <b>nella speranza che sia utile a tutti</b> ma senza alcuna garanzia (nè garanzie di commerciabilità).</p>
+Ciò è per permettere a chiunque di usare, studiare, migliorare e ricondividere quest\'app con <b>qualunque mezzo</b> e per <b>qualsiasi scopo</b> a patto di mantenere sempre questi diritti.</p>
+<p>Quest\'applicazione è rilasciata <b>nella speranza che sia utile a tutti</b>, ma senza alcuna garanzia (nè garanzie di commerciabilità).</p>
 
 <h2>Note</h2>
 <p>Se ti accorgi di qualche difetto o se hai idee, usa il <a href="https://github.com/valerio-bozzolan/AcrylicPaint/issues">bug tracker</a>.</p>

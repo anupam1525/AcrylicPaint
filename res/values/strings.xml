@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Acrylic Paint</string>
-    <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the strong support. Thanks to all the contributors!</string>
+    <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the terrific support. Thanks to all the contributors!</string>
     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
     <string name="color">Color</string>
     <string name="emboss">Bold</string>
@@ -30,8 +30,28 @@
     <string name="about_description">
 <![CDATA[
 <h1>Acrylic Paint</h1>
-<p>Thanks for using Acrylic Paint!<br />A <b>Free and Open Source software</b>… to free your creativity!</p>
+<p>Thanks for using Acrylic Paint!<br />A <b>Free and Open Source software</b> to free your creativity!</p>
+
+<h2>Credits</h2>
+<p>Special thanks to:<br>
+<b><a href="https://github.com/anupam1525>Anupam Shrivastava</a></b> for the former version of Acrylic Paint. Now he's inactive.<br>
+<b><a href="https://github.com/valerio-bozzolan">Valerio Bozzolan</a></b> for the great work done reviewing the source code and optimising it. He currently carries on the work for this version of AcrylicPaint.<br>
+<b><a href="https://github.com/marcogagino-22">Marco Gagino</a></b> for the thorough restyling and the great participation!
+</p>    
+
+<h2>Licenses</h2>
+<p>This version of Acrylic Paint and its source code are released by <a href="mailto:valerio.bozzolan@studenti.polito.it?subject=AcrylicPaint">Valerio Bozzolan</a> under the
+terms of the <i>GNU GPLv3+</i> license.
+This license gives everyone the ability to use, study, better and share this app with <b>any means</b> and for <b>every purpose</b> as long as you offer these same rights to the otehrs.</p>
+<p>This app is distributed <b>in the hope that it will be useful to everyone</b>, but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+
+<h2>Note</h2>
+<p>If you notice any problem or if you have some ideas feel free to use the <a href="https://github.com/valerio-bozzolan/AcrylicPaint/issues">bug tracker</a>.</p>
+<p>Contribute to the source code: <a href="https://github.com/valerio-bozzolan/AcrylicPaint">valerio-bozzolan/AcrylicPaint</a> @GitHub.</p>
+<p>Read the <a href="https://github.com/valerio-bozzolan/AcrylicPaint/blob/master/README.md">README</a> file for further information.</p>
+
+<p>Have fun!</p> 
     ]]>
 	</string>
-
 </resources>
