@@ -3,6 +3,8 @@
 
     <style name="CustomActionBarTheme" parent="@android:style/Theme.DeviceDefault.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowNoTitle">false</item>
+   		<item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- ActionBar styles -->

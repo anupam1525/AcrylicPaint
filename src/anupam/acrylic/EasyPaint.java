@@ -52,7 +52,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -76,13 +75,6 @@ public class EasyPaint extends GraphicsActivity implements
 
 		// it removes the title from the actionbar(more space for icons?)
 		// this.getActionBar().setDisplayShowTitleEnabled(false);
-
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		// this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-		// it removes the navigation bar, but you can't paint without it and
-		// once it is shown again, it doesn't hide again
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(new MyView(this));
