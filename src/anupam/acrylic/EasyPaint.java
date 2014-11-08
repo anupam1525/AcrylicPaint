@@ -62,11 +62,12 @@ import android.widget.Toast;
 public class EasyPaint extends GraphicsActivity implements
 		ColorPickerDialog.OnColorChangedListener {
 
+	public static int MAX_POINTERS = 10;
+	public static int DEFAULT_BRUSH_SIZE = 10;
+
 	private Paint mPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
-
-	public static int DEFAULT_BRUSH_SIZE = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,11 +135,6 @@ public class EasyPaint extends GraphicsActivity implements
 
 			SuperPath() {
 				this.idPointer = null;
-			}
-
-			public void setLastXY(float x, float y) {
-				this.lastX = x;
-				this.lastY = y;
 			}
 
 			public float getLastX() {
@@ -210,14 +206,12 @@ public class EasyPaint extends GraphicsActivity implements
 						return superMultiPaths[i];
 					}
 				}
-				Log.e("anupam", "anupamdio Tutte le dita usate???");
 				return null;
 			}
 		}
 
 		private Bitmap mBitmap;
 		private Canvas mCanvas;
-		private Path mPath;
 		private Paint mBitmapPaint;
 		private SuperMultiPathManager superMultiPathManager;
 
@@ -233,9 +227,8 @@ public class EasyPaint extends GraphicsActivity implements
 			mBitmap = Bitmap.createBitmap(width, height,
 					Bitmap.Config.ARGB_8888);
 			mCanvas = new Canvas(mBitmap);
-			mPath = new Path();
 			mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-			superMultiPathManager = new SuperMultiPathManager(5);
+			superMultiPathManager = new SuperMultiPathManager(MAX_POINTERS);
 		}
 
 		@Override
@@ -247,115 +240,62 @@ public class EasyPaint extends GraphicsActivity implements
 		protected void onDraw(Canvas canvas) {
 			canvas.drawColor(0xFFFFFFFF);
 			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-			for(int i=0; i<superMultiPathManager.superMultiPaths.length; i++) {
-				canvas.drawPath(superMultiPathManager.superMultiPaths[i], mPaint);
+			for (int i = 0; i < superMultiPathManager.superMultiPaths.length; i++) {
+				canvas.drawPath(superMultiPathManager.superMultiPaths[i],
+						mPaint);
 			}
 		}
 
 		private static final float TOUCH_TOLERANCE = 4;
 
-		/*
-		 * private void touch_start(float x, float y) { mPath.reset();
-		 * mPath.moveTo(x, y); mX = x; mY = y; }
-		 */
-
-		/*
-		 * private void touch_move(float x, float y) { float dx = Math.abs(x -
-		 * mX); float dy = Math.abs(y - mY); if (dx >= TOUCH_TOLERANCE || dy >=
-		 * TOUCH_TOLERANCE) { mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-		 * mX = x; mY = y; } }
-		 */
-
-		/*
-		 * private void touch_up() { mPath.lineTo(mX, mY); // commit the path to
-		 * our offscreen mCanvas.drawPath(mPath, mPaint); // kill this so we
-		 * don't double draw mPath.reset(); }
-		 */
-
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
 			SuperPath superPath;
-			int index = event.getActionIndex();
-			int id = event.getPointerId(index);
+			int index;
+			int id;
 			int qualcosa = event.getActionMasked();
 			if (qualcosa == MotionEvent.ACTION_DOWN
 					|| qualcosa == MotionEvent.ACTION_POINTER_DOWN) {
-				Log.d("anupam", "anupamdio GIÙ " + id);
+				index = event.getActionIndex();
+				id = event.getPointerId(index);
 				superPath = superMultiPathManager
 						.addSuperPathRelatedToPointer(id);
-				if (superPath == null) {
-					Log.e("asd", "anupamdio ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+				if (superPath != null) {
+					superPath.touchStart(event.getX(index), event.getY(index));
+				} else {
+					Log.e("anupam", "Too many fingers!");
 				}
-				superPath.touchStart(event.getX(index), event.getY(index));
 			} else if (qualcosa == MotionEvent.ACTION_MOVE) {
 				for (int i = 0; i < event.getPointerCount(); i++) {
 					id = event.getPointerId(i);
 					index = event.findPointerIndex(id);
-					Log.d("asd", "anupamdio moved " + id + " (" + event.getX(index) + ";" + event.getY(index) + ")");
-					superPath = superMultiPathManager.getSuperPathRelatedToPointer(id);
-					if (superPath == null) {
-						Log.e("asd", "anupamdio ERRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+					superPath = superMultiPathManager
+							.getSuperPathRelatedToPointer(id);
+					if (superPath != null) {
+						superPath.touchMove(event.getX(index),
+								event.getY(index));
 					}
-					superPath.touchMove(event.getX(index), event.getY(index));
 				}
 			} else if (qualcosa == MotionEvent.ACTION_UP
 					|| qualcosa == MotionEvent.ACTION_POINTER_UP
 					|| qualcosa == MotionEvent.ACTION_CANCEL) {
-				Log.d("anupam", "anupamdio ALZATO " + id);
+				index = event.getActionIndex();
+				id = event.getPointerId(index);
 				superPath = superMultiPathManager
 						.getSuperPathRelatedToPointer(id);
-				superPath.lineTo(superPath.getLastX(), superPath.getLastY());
-				// commit the path to our offscreen
-				mCanvas.drawPath(superPath, mPaint);
-				// kill this so we don't double draw
-				superPath.reset();
+				if (superPath != null) {
+					superPath
+							.lineTo(superPath.getLastX(), superPath.getLastY());
+					// commit the path to our offscreen
+					mCanvas.drawPath(superPath, mPaint);
+					// kill this so we don't double draw
+					superPath.reset();
 
-				superPath.freeFromPointer();
+					superPath.freeFromPointer();
+				}
 			}
 			invalidate();
 			return true;
-			/*
-			 * final int action = event.getAction(); switch (action &
-			 * MotionEvent.ACTION_MASK) { case MotionEvent.ACTION_DOWN: { final
-			 * float x = ev.getX(); final float y = ev.getY();
-			 * 
-			 * mLastTouchX = x; mLastTouchY = y;
-			 * 
-			 * // Save the ID of this pointer mActivePointerId =
-			 * event.getPointerId(0); break; }
-			 * 
-			 * case MotionEvent.ACTION_MOVE: { // Find the index of the active
-			 * pointer and fetch its position final int pointerIndex =
-			 * ev.findPointerIndex(mActivePointerId); final float x =
-			 * ev.getX(pointerIndex); final float y = ev.getY(pointerIndex);
-			 * 
-			 * final float dx = x - mLastTouchX; final float dy = y -
-			 * mLastTouchY;
-			 * 
-			 * mPosX += dx; mPosY += dy;
-			 * 
-			 * mLastTouchX = x; mLastTouchY = y;
-			 * 
-			 * invalidate(); break; }
-			 * 
-			 * case MotionEvent.ACTION_UP: { mActivePointerId =
-			 * INVALID_POINTER_ID; break; }
-			 * 
-			 * case MotionEvent.ACTION_CANCEL: { mActivePointerId =
-			 * INVALID_POINTER_ID; break; }
-			 * 
-			 * case MotionEvent.ACTION_POINTER_UP: { // Extract the index of the
-			 * pointer that left the touch sensor final int pointerIndex =
-			 * (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >>
-			 * MotionEvent.ACTION_POINTER_INDEX_SHIFT; final int pointerId =
-			 * ev.getPointerId(pointerIndex); if (pointerId == mActivePointerId)
-			 * { // This was our active pointer going up. Choose a new // active
-			 * pointer and adjust accordingly. final int newPointerIndex =
-			 * pointerIndex == 0 ? 1 : 0; mLastTouchX =
-			 * ev.getX(newPointerIndex); mLastTouchY = ev.getY(newPointerIndex);
-			 * mActivePointerId = ev.getPointerId(newPointerIndex); } break; } }
-			 * return true;
-			 */
 		}
 	}
 
@@ -552,11 +492,8 @@ public class EasyPaint extends GraphicsActivity implements
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 				alert.setTitle(R.string.about);
-
 				alert.setMessage(R.string.app_description);
-
 				alert.setPositiveButton(R.string.ok, null);
-
 				alert.show();
 			} catch (Exception e) {
 				// TODO: handle exception
