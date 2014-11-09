@@ -25,7 +25,7 @@
     <string name="no_way_to_share">Non risulta alcuna app con cui condividere la tua opera…</string>
     <string name="normal">Matita</string>
     <string name="title_activity_about">Informazioni</string>
-    <string name="press_back_again">Premi ancora per uscire</string>
+    <string name="press_back_again">Premi ancora per uscire\n(Perderai tutto il lavoro non salvato)</string>
     <string name="about_description">
 <![CDATA[
 <h1>Acrylic Paint</h1>
