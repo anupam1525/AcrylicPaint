@@ -26,7 +26,7 @@
     <string name="no_way_to_share">Can\'t locate an app to share with…</string>
     <string name="normal">Pencil</string>
     <string name="title_activity_about">About</string>
-    <string name="press_back_again">Press back again to exit\n(You will lose all the unsaved work)</string>
+    <string name="press_back_again">Press back again to exit!\n(Losing all the unsaved work)</string>
     <string name="about_description">
 <![CDATA[
 <h1>Acrylic Paint</h1>
