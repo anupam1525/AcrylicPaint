@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/brushSizeSeekBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -18,7 +18,7 @@
     </SeekBar>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/chooseYourSizeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -28,21 +28,21 @@
     </TextView>
 
     <TextView
-        android:id="@+id/size_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBar1"
-        android:layout_centerHorizontal="true" >
-    </TextView>
-
-    <Button
-        android:id="@+id/select_size"
+        android:id="@+id/sizeValueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/size_value"
-        android:text="@string/select" >
-    </Button>
+        android:layout_below="@+id/brushSizeSeekBar"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/selectBrushSizeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sizeValueTextView"
+        android:text="@string/select" />
 
 </RelativeLayout>

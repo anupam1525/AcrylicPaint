@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Acrylic Paint</string>
-    <string name="app_description">Acrylic Paint is a coloring tool which helps you to make anything of your imagination.\nPick the color you want and start painting.\n\nPress menu for more options!\n\nHappy painting :)\n\nThis software is released under the terms of the GNU General Public License Version 3+.\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the terrific support. Thanks to all the contributors!</string>
+    <string name="app_description">Acrylic Paint is a Free and Open Source Software that free your creativity!\n\nPress menu for more options.\n\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the terrific support. Thanks to all the contributors!\n\nHappy painting :)</string>
     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
     <string name="color">Color</string>
     <string name="emboss">Bold</string>
@@ -13,7 +13,6 @@
     <string name="save">Save</string>
     <string name="share">Share</string>
     <string name="about">About</string>
-    <string name="default_size_is">Default size: %1$s</string>
     <string name="your_selected_size_is">Selected size: %1$s</string>
     <string name="choose_width">Choose your size:</string>
     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
@@ -31,7 +30,7 @@
     <string name="about_description">
 <![CDATA[
 <h1>Acrylic Paint</h1>
-<p>Thanks for using Acrylic Paint!<br />A <b>Free and Open Source software</b> to free your creativity!</p>
+<p>Thanks for using Acrylic Paint!<br />A <b>Free and Open Source Software</b> to free your creativity!</p>
 
 <h2>Credits</h2>
 <p>Special thanks to:<br>
@@ -54,5 +53,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
 
 <p>Have fun!</p> 
     ]]>
-	</string>
+    </string>
+
 </resources>

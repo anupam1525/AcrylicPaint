@@ -352,14 +352,14 @@ public class EasyPaint extends GraphicsActivity implements
 					.setView(layout);
 			final AlertDialog alertDialog = builder.create();
 			alertDialog.show();
-			SeekBar sb = (SeekBar) layout.findViewById(R.id.seekBar1);
+			SeekBar sb = (SeekBar) layout.findViewById(R.id.brushSizeSeekBar);
 			sb.setProgress(getStrokeSize());
-			final Button done = (Button) layout.findViewById(R.id.select_size);
+			final Button done = (Button) layout.findViewById(R.id.selectBrushSizeButton);
 			final TextView txt = (TextView) layout
-					.findViewById(R.id.size_value);
+					.findViewById(R.id.sizeValueTextView);
 			txt.setText(String.format(
-					getResources().getString(R.string.default_size_is),
-					getStrokeSize()));
+					getResources().getString(R.string.your_selected_size_is),
+					getStrokeSize()+1));
 			sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
@@ -367,7 +367,7 @@ public class EasyPaint extends GraphicsActivity implements
 					mPaint.setStrokeWidth(progress);
 					txt.setText(String.format(
 							getResources().getString(
-									R.string.your_selected_size_is), progress));
+									R.string.your_selected_size_is), progress+1));
 				}
 
 				@Override
@@ -394,15 +394,15 @@ public class EasyPaint extends GraphicsActivity implements
 					.setView(layout_e);
 			final AlertDialog alertDialog_e = builder_e.create();
 			alertDialog_e.show();
-			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.seekBar1);
+			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.brushSizeSeekBar);
 			sb_e.setProgress(getStrokeSize());
 			final Button done_e = (Button) layout_e
-					.findViewById(R.id.select_size);
+					.findViewById(R.id.selectBrushSizeButton);
 			final TextView txt_e = (TextView) layout_e
-					.findViewById(R.id.size_value);
+					.findViewById(R.id.sizeValueTextView);
 			txt_e.setText(String.format(
-					getResources().getString(R.string.default_size_is),
-					getStrokeSize()));
+					getResources().getString(R.string.your_selected_size_is),
+					getStrokeSize()+1));
 			sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(SeekBar seekBar,
 						final int progress, boolean fromUser) {
@@ -471,7 +471,6 @@ public class EasyPaint extends GraphicsActivity implements
 	 */
 	private File takeScreenshot(boolean showToast) {
 		View v = getWindow().getDecorView();
-
 		v.setDrawingCacheEnabled(true);
 		Bitmap cachedBitmap = v.getDrawingCache();
 		Bitmap copyBitmap = cachedBitmap.copy(Bitmap.Config.RGB_565, true);
