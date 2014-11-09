@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +46,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -68,6 +72,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private Paint mPaint;
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
+	private boolean doubleBackToExitPressedOnce = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,26 @@ public class EasyPaint extends GraphicsActivity implements
 					R.string.here_is_your_canvas, Toast.LENGTH_SHORT).show();
 		}
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			super.onBackPressed();
+			return;
+		}
+
+		this.doubleBackToExitPressedOnce = true;
+		Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_SHORT)
+				.show();
+
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				doubleBackToExitPressedOnce = false;
+			}
+		}, 1000);
 	}
 
 	public void colorChanged(int color) {
@@ -435,9 +460,7 @@ public class EasyPaint extends GraphicsActivity implements
 			}
 			break;
 		case R.id.about_menu:
-			Intent intentAbout = new Intent(EasyPaint.this,
-					AboutActivity.class);
-			startActivity(intentAbout);
+			startActivity(new Intent(this, AboutActivity.class));
 			break;
 		}
 		return super.onOptionsItemSelected(item);

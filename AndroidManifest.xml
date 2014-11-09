@@ -32,14 +32,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EasyPaint" >
+        <activity
+            android:name=".EasyPaint"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name=".AboutActivity"
-            android:label="@string/title_activity_about" >
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".EasyPaint" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="anupam.acrylic.EasyPaint" />
+                android:value=".EasyPaint" />
         </activity>
     </application>
 

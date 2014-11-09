@@ -26,6 +26,7 @@
     <string name="share_text_template">Share as text</string>
     <string name="no_way_to_share">Can\'t locate an app to share with…</string>
     <string name="normal">Pencil</string>
+    <string name="press_back_again">Press back again to exit</string>
     <string name="title_activity_about">About</string>
     <string name="about_description">
 <![CDATA[
