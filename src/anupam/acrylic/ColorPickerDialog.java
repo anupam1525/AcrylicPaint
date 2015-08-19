@@ -56,8 +56,8 @@ public class ColorPickerDialog extends Dialog {
     }
 
     private static class ColorPickerView extends View {
-        private static final int CENTER_X = 200;
-        private static final int CENTER_Y = 200;
+        private static final int CENTER_X = 230;
+        private static final int CENTER_Y = 230;
         private static final int CENTER_RADIUS = 100;
         private Paint mPaint;
         private Paint mCenterPaint;
@@ -88,7 +88,7 @@ public class ColorPickerDialog extends Dialog {
         @Override
         protected void onDraw(Canvas canvas) {
 
-            float r = CENTER_X - mPaint.getStrokeWidth()*0.5f;
+            float r = CENTER_X - mPaint.getStrokeWidth()*0.5f - 30;
 
             canvas.translate(CENTER_X, CENTER_X);
 
