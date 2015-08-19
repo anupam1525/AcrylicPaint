@@ -401,7 +401,7 @@ public class EasyPaint extends GraphicsActivity implements
 					mPaint.setStrokeWidth(progress);
 					txt_e.setText(String.format(
 							getResources().getString(
-									R.string.your_selected_size_is), progress));
+									R.string.your_selected_size_is), progress+1));
 				}
 
 				public void onStartTrackingTouch(SeekBar seekBar) {
