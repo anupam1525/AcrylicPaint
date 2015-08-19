@@ -14,7 +14,7 @@
     <string name="share">Share</string>
     <string name="about">About</string>
     <string name="your_selected_size_is">Selected size: %1$s</string>
-    <string name="choose_width">Choose your size:</string>
+    <string name="choose_width">Brush size</string>
     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
     <string name="select">Select</string>
     <string name="continue_fuck">Continue</string> <!-- Workaround to avoid "R.string.continue", that it's as a special class-word! D: -->

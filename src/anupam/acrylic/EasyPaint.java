@@ -347,11 +347,11 @@ public class EasyPaint extends GraphicsActivity implements
 					(ViewGroup) findViewById(R.id.root));
 			AlertDialog.Builder builder = new AlertDialog.Builder(this)
 					.setView(layout);
+			builder.setTitle(R.string.choose_width);
 			final AlertDialog alertDialog = builder.create();
 			alertDialog.show();
 			SeekBar sb = (SeekBar) layout.findViewById(R.id.brushSizeSeekBar);
 			sb.setProgress(getStrokeSize());
-			final Button done = (Button) layout.findViewById(R.id.selectBrushSizeButton);
 			final TextView txt = (TextView) layout
 					.findViewById(R.id.sizeValueTextView);
 			txt.setText(String.format(
@@ -377,11 +377,6 @@ public class EasyPaint extends GraphicsActivity implements
 					// TODO Auto-generated method stub
 				}
 			});
-			done.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					alertDialog.dismiss();
-				}
-			});
 			return true;
 		case R.id.erase_menu:
 			LayoutInflater inflater_e = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -389,12 +384,11 @@ public class EasyPaint extends GraphicsActivity implements
 					(ViewGroup) findViewById(R.id.root));
 			AlertDialog.Builder builder_e = new AlertDialog.Builder(this)
 					.setView(layout_e);
+			builder_e.setTitle(R.string.choose_width);
 			final AlertDialog alertDialog_e = builder_e.create();
 			alertDialog_e.show();
 			SeekBar sb_e = (SeekBar) layout_e.findViewById(R.id.brushSizeSeekBar);
 			sb_e.setProgress(getStrokeSize());
-			final Button done_e = (Button) layout_e
-					.findViewById(R.id.selectBrushSizeButton);
 			final TextView txt_e = (TextView) layout_e
 					.findViewById(R.id.sizeValueTextView);
 			txt_e.setText(String.format(
@@ -407,7 +401,7 @@ public class EasyPaint extends GraphicsActivity implements
 					mPaint.setStrokeWidth(progress);
 					txt_e.setText(String.format(
 							getResources().getString(
-									R.string.your_selected_size_is), progress));
+									R.string.your_selected_size_is), progress+1));
 				}
 
 				public void onStartTrackingTouch(SeekBar seekBar) {
@@ -416,11 +410,6 @@ public class EasyPaint extends GraphicsActivity implements
 
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					// TODO Auto-generated method stub
-				}
-			});
-			done_e.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					alertDialog_e.dismiss();
 				}
 			});
 			// mPaint.setColor(bgColor);
