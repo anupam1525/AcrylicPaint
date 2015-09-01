@@ -233,6 +233,7 @@ public class EasyPaint extends GraphicsActivity implements
 		public MyView(Context c) {
 			super(c);
 
+			setId(R.id.CanvasId);
 			Display display = getWindowManager().getDefaultDisplay();
 			Point size = new Point();
 			display.getSize(size);
@@ -456,10 +457,11 @@ public class EasyPaint extends GraphicsActivity implements
 	 * This takes the screenshot of the whole screen. Is this a good thing?
 	 */
 	private File takeScreenshot(boolean showToast) {
-		View v = getWindow().getDecorView();
+		View v = findViewById(R.id.CanvasId);
 		v.setDrawingCacheEnabled(true);
 		Bitmap cachedBitmap = v.getDrawingCache();
 		Bitmap copyBitmap = cachedBitmap.copy(Bitmap.Config.RGB_565, true);
+		v.destroyDrawingCache();
 		FileOutputStream output = null;
 		File file = null;
 		try {
