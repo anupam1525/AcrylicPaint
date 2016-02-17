@@ -1,5 +1,5 @@
 # Acrylic Paint
-Acrylic Paint is Free as in Freedom a coloring app for Android which helps you to share your imagination.
+Acrylic Paint is a Free as in Freedom coloring app for Android which helps you to share your imagination.
 Made some changes from FingerPaint project taken from API demos.
 
 ## Installing
