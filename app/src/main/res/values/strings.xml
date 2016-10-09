@@ -13,6 +13,7 @@
     <string name="save">Save</string>
     <string name="share">Share</string>
     <string name="about">About</string>
+    <string name="import_image">Import image</string>
     <string name="your_selected_size_is">Selected size: %1$s</string>
     <string name="choose_width">Brush size</string>
     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
