@@ -44,6 +44,7 @@ import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -51,9 +52,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +70,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private MaskFilter mBlur;
 	private boolean doubleBackToExitPressedOnce = false;
 	private static final int CHOOSE_IMAGE = 0;
+	private MyView contentView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,8 @@ public class EasyPaint extends GraphicsActivity implements
 		// this.getActionBar().setDisplayShowTitleEnabled(false);
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		setContentView(new MyView(this));
+		contentView = new MyView( this );
+		setContentView( contentView );
 
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -145,6 +146,7 @@ public class EasyPaint extends GraphicsActivity implements
 	public class MyView extends View {
 
 		private Bitmap mBitmap;
+		private Bitmap mBitmapBackground;
 		private Canvas mCanvas;
 		private Paint mBitmapPaint;
 		private MultiLinePathManager multiLinePathManager;
@@ -238,6 +240,7 @@ public class EasyPaint extends GraphicsActivity implements
 			Display display = getWindowManager().getDefaultDisplay();
 			Point size = new Point();
 			display.getSize(size);
+			mBitmapBackground = Bitmap.createBitmap(size.x, size.y,  Bitmap.Config.ARGB_8888);
 			mBitmap = Bitmap.createBitmap(size.x, size.y,
 					Bitmap.Config.ARGB_8888);
 			mCanvas = new Canvas(mBitmap);
@@ -253,7 +256,8 @@ public class EasyPaint extends GraphicsActivity implements
 		@Override
 		protected void onDraw(Canvas canvas) {
 			canvas.drawColor(0xFFFFFFFF);
-			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+			canvas.drawBitmap( mBitmapBackground, 0, 0, new Paint() );
+			canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint );
 			for (int i = 0; i < multiLinePathManager.superMultiPaths.length; i++) {
 				canvas.drawPath(multiLinePathManager.superMultiPaths[i], mPaint);
 			}
@@ -414,7 +418,7 @@ public class EasyPaint extends GraphicsActivity implements
 					// TODO Auto-generated method stub
 				}
 			});
-			// mPaint.setColor(bgColor);
+			//mPaint.setColor(bgColor);
 			mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 			return true;
 		case R.id.clear_all_menu: {
@@ -448,12 +452,12 @@ public class EasyPaint extends GraphicsActivity implements
 						Toast.LENGTH_LONG).show();
 			}
 			break;
-		case R.id.import_image_menu: {
+		case R.id.open_image_menu: {
 			Intent intent = new Intent( );
 			intent.setType( "image/*" ); //The argument is an all-lower-case MIME type - in this case, any image format.
 			intent.setAction( Intent.ACTION_GET_CONTENT );
 			intent.putExtra( Intent.EXTRA_ALLOW_MULTIPLE, false ); //This is false by default, but I felt that for code clarity it was better to be explicit: we only want one image
-			startActivityForResult( Intent.createChooser( intent, getResources().getString( R.string.select_image_to_import ) ), CHOOSE_IMAGE );
+			startActivityForResult( Intent.createChooser( intent, getResources().getString( R.string.select_image_to_open ) ), CHOOSE_IMAGE );
 			break;
 		}
 		case R.id.about_menu:
@@ -543,8 +547,23 @@ public class EasyPaint extends GraphicsActivity implements
 		super.onActivityResult( requestCode, resultCode, data );
 		
 		if( resultCode != RESULT_CANCELED ) { //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
-			if( requestCode == CHOOSE_IMAGE ) {
-				//TODO: Load and display the image
+			switch( requestCode ) {
+				case CHOOSE_IMAGE: {
+					try {
+						Uri imageUri = data.getData( );
+						
+						//I don't like loading both full-sized and reduced-size copies of the image (the larger copy can use a lot of memory), but I couldn't find any other way to do this.
+						Bitmap fullsize = MediaStore.Images.Media.getBitmap( this.getContentResolver( ), imageUri );
+						Bitmap resized = Bitmap.createScaledBitmap( fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true );
+						
+						contentView.mBitmapBackground = resized;
+						//contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
+					} catch( FileNotFoundException exception ) {
+						//TODO: How should we handle this exception?
+					} catch( IOException exception ) {
+						//TODO: How should we handle this exception?
+					}
+				}
 			}
 		}
 	}

@@ -55,10 +55,10 @@
         android:title="@string/share">
     </item>
     <item
-        android:id="@+id/import_image_menu"
+        android:id="@+id/open_image_menu"
         android:icon="@+drawable/import_image"
         android:showAsAction="ifRoom"
-        android:title="@string/import_image">
+        android:title="@string/open_image">
     </item>
     <item
         android:id="@+id/about_menu"
