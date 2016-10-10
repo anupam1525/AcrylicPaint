@@ -121,6 +121,7 @@ public class EasyPaint extends GraphicsActivity implements
 					R.string.here_is_your_canvas, Toast.LENGTH_SHORT).show();
 		}
 
+		loadFromIntents();
 	}
 
 	@Override
@@ -564,22 +565,40 @@ public class EasyPaint extends GraphicsActivity implements
 		if( resultCode != RESULT_CANCELED ) { //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
 			switch( requestCode ) {
 				case CHOOSE_IMAGE: {
-					try {
-						Uri imageUri = data.getData( );
-
-						//I don't like loading both full-sized and reduced-size copies of the image (the larger copy can use a lot of memory), but I couldn't find any other way to do this.
-						Bitmap fullsize = MediaStore.Images.Media.getBitmap( this.getContentResolver( ), imageUri );
-						Bitmap resized = Bitmap.createScaledBitmap( fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true );
-
-						contentView.mBitmapBackground = resized;
-						//contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
-					} catch( FileNotFoundException exception ) {
-						//TODO: How should we handle this exception?
-					} catch( IOException exception ) {
-						//TODO: How should we handle this exception?
-					}
+					setBackgroundUri( data.getData() );
 				}
 			}
+		}
+	}
+
+	public void setBackgroundUri(Uri uri) {
+		if (uri == null) {
+			return;
+		}
+
+		try {
+			//I don't like loading both full-sized and reduced-size copies of the image (the larger copy can use a lot of memory), but I couldn't find any other way to do this.
+			Bitmap fullsize = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+			Bitmap resized = Bitmap.createScaledBitmap(fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true);
+			contentView.mBitmapBackground = resized;
+			//contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
+		} catch (FileNotFoundException exception) {
+			//TODO: How should we handle this exception?
+		} catch (IOException exception) {
+			//TODO: How should we handle this exception?
+		}
+	}
+
+	public void loadFromIntents() {
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		String type = intent.getType();
+		System.out.println("Intentoso " + action + " type " + type);
+		if(Intent.ACTION_SEND.equals(action) && type != null) {
+			if( type.startsWith("image/") ) {
+				setBackgroundUri( (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM) );
+			}
+
 		}
 	}
 }
