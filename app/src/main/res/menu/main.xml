@@ -61,6 +61,12 @@
         android:title="@string/open_image">
     </item>
     <item
+        android:id="@+id/fill_background_with_color"
+        android:icon="@+drawable/fill_background_with_color"
+        android:showAsAction="ifRoom"
+        android:title="@string/fill_background_with_color">
+    </item>
+    <item
         android:id="@+id/about_menu"
         android:icon="@+drawable/about"
         android:showAsAction="ifRoom"

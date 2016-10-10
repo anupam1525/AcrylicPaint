@@ -9,11 +9,12 @@
     <string name="blur">Blur</string>
     <string name="brush_size">Brush size</string>
     <string name="erase">Erase</string>
-    <string name="clear_all">Erase all</string>
+    <string name="clear_all">Erase entire foreground</string>
     <string name="save">Save</string>
     <string name="share">Share</string>
     <string name="about">About</string>
-    <string name="open_image">Open image</string>
+    <string name="open_image">Open image as background</string>
+    <string name="fill_background_with_color">Fill background with color</string>
     <string name="your_selected_size_is">Selected size: %1$s</string>
     <string name="choose_width">Brush size</string>
     <string name="saved_your_location_to">Saved your artwork to %1$s</string>
