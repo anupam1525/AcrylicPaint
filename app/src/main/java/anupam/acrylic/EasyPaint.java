@@ -227,19 +227,19 @@ public class EasyPaint extends GraphicsActivity implements
 			}
 
 			public LinePath findLinePathFromPointer(int idPointer) {
-				for (int i = 0; i < superMultiPaths.length; i++) {
-					if (superMultiPaths[i].isAssociatedToPointer(idPointer)) {
-						return superMultiPaths[i];
+				for (LinePath superMultiPath : superMultiPaths) {
+					if (superMultiPath.isAssociatedToPointer(idPointer)) {
+						return superMultiPath;
 					}
 				}
 				return null;
 			}
 
 			public LinePath addLinePathWithPointer(int idPointer) {
-				for (int i = 0; i < superMultiPaths.length; i++) {
-					if (superMultiPaths[i].isDisassociatedFromPointer()) {
-						superMultiPaths[i].associateToPointer(idPointer);
-						return superMultiPaths[i];
+				for (LinePath superMultiPath : superMultiPaths) {
+					if (superMultiPath.isDisassociatedFromPointer()) {
+						superMultiPath.associateToPointer(idPointer);
+						return superMultiPath;
 					}
 				}
 				return null;
@@ -582,8 +582,6 @@ public class EasyPaint extends GraphicsActivity implements
 			Bitmap resized = Bitmap.createScaledBitmap(fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true);
 			contentView.mBitmapBackground = resized;
 			//contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
-		} catch (FileNotFoundException exception) {
-			//TODO: How should we handle this exception?
 		} catch (IOException exception) {
 			//TODO: How should we handle this exception?
 		}
