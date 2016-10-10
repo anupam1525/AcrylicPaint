@@ -12,6 +12,7 @@
     <string name="save">Salva</string>
     <string name="share">Condividi</string>
     <string name="about">Info</string>
+    <string name="open_image">Apri immagine come sfondo</string>
     <string name="your_selected_size_is">Dimensione scelta: %1$s</string>
     <string name="choose_width">Scegli dimensione:</string>
     <string name="saved_your_location_to">La tua creazione è stata salvata in %1$s</string>
@@ -52,5 +53,5 @@ Ciò è per permettere a chiunque di usare, studiare, migliorare e ricondividere
 <p>Divertiti!</p>
     ]]>
     </string>
-
+    <string name="select_image_to_open">Seleziona l\'immagine da aprire</string>
 </resources>

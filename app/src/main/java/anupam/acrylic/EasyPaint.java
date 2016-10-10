@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Valerio Bozzolan
+ * Copyright (C) 2014, 2016 Valerio Bozzolan
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private boolean doubleBackToExitPressedOnce = false;
 	private static final int CHOOSE_IMAGE = 0;
 	private MyView contentView;
-	
+
 	private boolean waitingForBackgroundColor = false; //If true and colorChanged() is called, fill the background, else mPaint.setColor()
 
 	@Override
@@ -94,10 +94,12 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
 		mPaint.setStrokeWidth(DEFAULT_BRUSH_SIZE);
 
-		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f); //Where did these magic numbers come from? What do they mean? Can I change them?
+		// Where did these magic numbers come from? What do they mean? Can I change them? ~TheOpenSourceNinja
+		// Absolutely random numbers in order to see the emboss. asd! ~Valerio
+		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
 
 		mBlur = new BlurMaskFilter(5, BlurMaskFilter.Blur.NORMAL);
-		
+
 		if (isFirstTime()) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -382,12 +384,12 @@ public class EasyPaint extends GraphicsActivity implements
 							getResources( ).getString(
 									R.string.your_selected_size_is ), progress + 1 ) );
 				}
-				
+
 				@Override
 				public void onStartTrackingTouch( SeekBar seekBar ) {
 					// TODO Auto-generated method stub
 				}
-				
+
 				@Override
 				public void onStopTrackingTouch( SeekBar seekBar ) {
 					// TODO Auto-generated method stub
@@ -420,11 +422,11 @@ public class EasyPaint extends GraphicsActivity implements
 							getResources( ).getString(
 									R.string.your_selected_size_is ), progress + 1 ) );
 				}
-				
+
 				public void onStartTrackingTouch( SeekBar seekBar ) {
 					// TODO Auto-generated method stub
 				}
-				
+
 				public void onStopTrackingTouch( SeekBar seekBar ) {
 					// TODO Auto-generated method stub
 				}
@@ -555,20 +557,20 @@ public class EasyPaint extends GraphicsActivity implements
 	private int getStrokeSize() {
 		return (int) mPaint.getStrokeWidth();
 	}
-	
+
 	public void onActivityResult( int requestCode, int resultCode, Intent data ) {
 		super.onActivityResult( requestCode, resultCode, data );
-		
+
 		if( resultCode != RESULT_CANCELED ) { //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
 			switch( requestCode ) {
 				case CHOOSE_IMAGE: {
 					try {
 						Uri imageUri = data.getData( );
-						
+
 						//I don't like loading both full-sized and reduced-size copies of the image (the larger copy can use a lot of memory), but I couldn't find any other way to do this.
 						Bitmap fullsize = MediaStore.Images.Media.getBitmap( this.getContentResolver( ), imageUri );
 						Bitmap resized = Bitmap.createScaledBitmap( fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true );
-						
+
 						contentView.mBitmapBackground = resized;
 						//contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
 					} catch( FileNotFoundException exception ) {
