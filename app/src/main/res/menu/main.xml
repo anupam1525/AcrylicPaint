@@ -55,7 +55,7 @@
         android:title="@string/share">
     </item>
     <item
-        android:id="@+id/import_image"
+        android:id="@+id/import_image_menu"
         android:icon="@+drawable/import_image"
         android:showAsAction="ifRoom"
         android:title="@string/import_image">

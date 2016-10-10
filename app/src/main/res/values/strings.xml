@@ -55,5 +55,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
 <p>Have fun!</p> 
     ]]>
     </string>
+    <string name="select_image_to_import">Select image to import</string>
 
 </resources>

@@ -70,6 +70,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private MaskFilter mEmboss;
 	private MaskFilter mBlur;
 	private boolean doubleBackToExitPressedOnce = false;
+	private static final int CHOOSE_IMAGE = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,10 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
 		mPaint.setStrokeWidth(DEFAULT_BRUSH_SIZE);
 
-		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f);
+		mEmboss = new EmbossMaskFilter(new float[] { 1, 1, 1 }, 0.4f, 6, 3.5f); //Where did these magic numbers come from? What do they mean? Can I change them?
 
 		mBlur = new BlurMaskFilter(5, BlurMaskFilter.Blur.NORMAL);
-
+		
 		if (isFirstTime()) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -416,14 +417,15 @@ public class EasyPaint extends GraphicsActivity implements
 			// mPaint.setColor(bgColor);
 			mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 			return true;
-		case R.id.clear_all_menu:
-			Intent intent = getIntent();
-			overridePendingTransition(0, 0);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			finish();
-			overridePendingTransition(0, 0);
-			startActivity(intent);
+		case R.id.clear_all_menu: {
+			Intent intent = getIntent( );
+			overridePendingTransition( 0, 0 );
+			intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
+			finish( );
+			overridePendingTransition( 0, 0 );
+			startActivity( intent );
 			return true;
+		}
 		case R.id.save_menu:
 			takeScreenshot(true);
 			break;
@@ -446,6 +448,14 @@ public class EasyPaint extends GraphicsActivity implements
 						Toast.LENGTH_LONG).show();
 			}
 			break;
+		case R.id.import_image_menu: {
+			Intent intent = new Intent( );
+			intent.setType( "image/*" ); //The argument is an all-lower-case MIME type - in this case, any image format.
+			intent.setAction( Intent.ACTION_GET_CONTENT );
+			intent.putExtra( Intent.EXTRA_ALLOW_MULTIPLE, false ); //This is false by default, but I felt that for code clarity it was better to be explicit: we only want one image
+			startActivityForResult( Intent.createChooser( intent, getResources().getString( R.string.select_image_to_import ) ), CHOOSE_IMAGE );
+			break;
+		}
 		case R.id.about_menu:
 			startActivity(new Intent(this, AboutActivity.class));
 			break;
@@ -527,5 +537,15 @@ public class EasyPaint extends GraphicsActivity implements
 
 	private int getStrokeSize() {
 		return (int) mPaint.getStrokeWidth();
+	}
+	
+	public void onActivityResult( int requestCode, int resultCode, Intent data ) {
+		super.onActivityResult( requestCode, resultCode, data );
+		
+		if( resultCode != RESULT_CANCELED ) { //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
+			if( requestCode == CHOOSE_IMAGE ) {
+				//TODO: Load and display the image
+			}
+		}
 	}
 }
