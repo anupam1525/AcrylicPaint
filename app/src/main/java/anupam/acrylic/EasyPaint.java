@@ -73,6 +73,7 @@ public class EasyPaint extends GraphicsActivity implements
 	private MyView contentView;
 
 	private boolean waitingForBackgroundColor = false; //If true and colorChanged() is called, fill the background, else mPaint.setColor()
+	private boolean extractingColor = false; //If this is true, the next touch event should extract a color rather than drawing a line.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -283,46 +284,67 @@ public class EasyPaint extends GraphicsActivity implements
 			int id;
 			int eventMasked = event.getActionMasked();
 			switch (eventMasked) {
-			case MotionEvent.ACTION_DOWN:
-			case MotionEvent.ACTION_POINTER_DOWN:
-				index = event.getActionIndex();
-				id = event.getPointerId(index);
-				linePath = multiLinePathManager.addLinePathWithPointer(id);
-				if (linePath != null) {
-					linePath.touchStart(event.getX(index), event.getY(index));
-				} else {
-					Log.e("anupam", "Too many fingers!");
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_POINTER_DOWN: {
+					index = event.getActionIndex( );
+					id = event.getPointerId( index );
+					
+					if( extractingColor ) { //If the user chose the 'extract color' menu option, the touch event indicates where they want to extract the color from.
+						extractingColor = false;
+						
+						View v = findViewById(R.id.CanvasId);
+						v.setDrawingCacheEnabled(true);
+						Bitmap cachedBitmap = v.getDrawingCache();
+						
+						int newColor = cachedBitmap.getPixel( Math.round( event.getX( index ) ), Math.round( event.getY( index ) ) );
+						
+						v.destroyDrawingCache();
+						colorChanged( newColor );
+						
+						Toast.makeText(getApplicationContext(),
+									   R.string.color_extracted,
+									   Toast.LENGTH_SHORT).show();
+					} else {
+						
+						linePath = multiLinePathManager.addLinePathWithPointer( id );
+						if( linePath != null ) {
+							linePath.touchStart( event.getX( index ), event.getY( index ) );
+						} else {
+							Log.e( "anupam", "Too many fingers!" );
+						}
+					}
+					
+					break;
 				}
-				break;
-			case MotionEvent.ACTION_MOVE:
-				for (int i = 0; i < event.getPointerCount(); i++) {
-					id = event.getPointerId(i);
-					index = event.findPointerIndex(id);
+				case MotionEvent.ACTION_MOVE:
+					for (int i = 0; i < event.getPointerCount(); i++) {
+						id = event.getPointerId(i);
+						index = event.findPointerIndex(id);
+						linePath = multiLinePathManager.findLinePathFromPointer(id);
+						if (linePath != null) {
+							linePath.touchMove(event.getX(index), event.getY(index));
+						}
+					}
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
+				case MotionEvent.ACTION_CANCEL:
+					index = event.getActionIndex();
+					id = event.getPointerId(index);
 					linePath = multiLinePathManager.findLinePathFromPointer(id);
 					if (linePath != null) {
-						linePath.touchMove(event.getX(index), event.getY(index));
+						linePath.lineTo(linePath.getLastX(), linePath.getLastY());
+	
+						// Commit the path to our offscreen
+						mCanvas.drawPath(linePath, mPaint);
+	
+						// Kill this so we don't double draw
+						linePath.reset();
+	
+						// Allow this LinePath to be associated to another idPointer
+						linePath.disassociateFromPointer();
 					}
-				}
-				break;
-			case MotionEvent.ACTION_UP:
-			case MotionEvent.ACTION_POINTER_UP:
-			case MotionEvent.ACTION_CANCEL:
-				index = event.getActionIndex();
-				id = event.getPointerId(index);
-				linePath = multiLinePathManager.findLinePathFromPointer(id);
-				if (linePath != null) {
-					linePath.lineTo(linePath.getLastX(), linePath.getLastY());
-
-					// Commit the path to our offscreen
-					mCanvas.drawPath(linePath, mPaint);
-
-					// Kill this so we don't double draw
-					linePath.reset();
-
-					// Allow this LinePath to be associated to another idPointer
-					linePath.disassociateFromPointer();
-				}
-				break;
+					break;
 			}
 			invalidate();
 			return true;
@@ -348,137 +370,144 @@ public class EasyPaint extends GraphicsActivity implements
 		mPaint.setAlpha(0xFF);
 
 		switch (item.getItemId()) {
-		case R.id.normal_brush_menu:
-			mPaint.setMaskFilter(null);
-			return true;
-		case R.id.color_menu:
-			new ColorPickerDialog(this, this, mPaint.getColor()).show();
-			return true;
-		case R.id.emboss_menu:
-			mPaint.setMaskFilter(mEmboss);
-			return true;
-		case R.id.blur_menu:
-			mPaint.setMaskFilter(mBlur);
-			return true;
-		case R.id.size_menu: {
-			LayoutInflater inflater = ( LayoutInflater ) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-			View layout = inflater.inflate( R.layout.brush,
-											( ViewGroup ) findViewById( R.id.root ) );
-			AlertDialog.Builder builder = new AlertDialog.Builder( this )
-					.setView( layout );
-			builder.setTitle( R.string.choose_width );
-			final AlertDialog alertDialog = builder.create( );
-			alertDialog.show( );
-			SeekBar sb = ( SeekBar ) layout.findViewById( R.id.brushSizeSeekBar );
-			sb.setProgress( getStrokeSize( ) );
-			final TextView txt = ( TextView ) layout
-					.findViewById( R.id.sizeValueTextView );
-			txt.setText( String.format(
-					getResources( ).getString( R.string.your_selected_size_is ),
-					getStrokeSize( ) + 1 ) );
-			sb.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener( ) {
-				public void onProgressChanged( SeekBar seekBar,
-											   final int progress, boolean fromUser ) {
-					// Do something here with new value
-					mPaint.setStrokeWidth( progress );
-					txt.setText( String.format(
-							getResources( ).getString(
-									R.string.your_selected_size_is ), progress + 1 ) );
-				}
-
-				@Override
-				public void onStartTrackingTouch( SeekBar seekBar ) {
-					// TODO Auto-generated method stub
-				}
-
-				@Override
-				public void onStopTrackingTouch( SeekBar seekBar ) {
-					// TODO Auto-generated method stub
-				}
-			} );
-			return true;
-		}
-		case R.id.erase_menu: {
-			LayoutInflater inflater_e = ( LayoutInflater ) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-			View layout_e = inflater_e.inflate( R.layout.brush,
-												( ViewGroup ) findViewById( R.id.root ) );
-			AlertDialog.Builder builder_e = new AlertDialog.Builder( this )
-					.setView( layout_e );
-			builder_e.setTitle( R.string.choose_width );
-			final AlertDialog alertDialog_e = builder_e.create( );
-			alertDialog_e.show( );
-			SeekBar sb_e = ( SeekBar ) layout_e.findViewById( R.id.brushSizeSeekBar );
-			sb_e.setProgress( getStrokeSize( ) );
-			final TextView txt_e = ( TextView ) layout_e
-					.findViewById( R.id.sizeValueTextView );
-			txt_e.setText( String.format(
-					getResources( ).getString( R.string.your_selected_size_is ),
-					getStrokeSize( ) + 1 ) );
-			sb_e.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener( ) {
-				public void onProgressChanged( SeekBar seekBar,
-											   final int progress, boolean fromUser ) {
-					// Do something here with new value
-					mPaint.setStrokeWidth( progress );
-					txt_e.setText( String.format(
-							getResources( ).getString(
-									R.string.your_selected_size_is ), progress + 1 ) );
-				}
-
-				public void onStartTrackingTouch( SeekBar seekBar ) {
-					// TODO Auto-generated method stub
-				}
-
-				public void onStopTrackingTouch( SeekBar seekBar ) {
-					// TODO Auto-generated method stub
-				}
-			} );
-			//mPaint.setColor(bgColor);
-			mPaint.setXfermode( new PorterDuffXfermode( Mode.CLEAR ) );
-			return true;
-		}
-		case R.id.clear_all_menu: {
-			contentView.mBitmap.eraseColor( Color.TRANSPARENT );
-			return true;
-		}
-		case R.id.save_menu:
-			takeScreenshot(true);
-			break;
-		case R.id.share_menu: {
-			File screenshotPath = takeScreenshot( false );
-			Intent i = new Intent( );
-			i.setAction( Intent.ACTION_SEND );
-			i.setType( "image/png" );
-			i.putExtra( Intent.EXTRA_SUBJECT,
-						getString( anupam.acrylic.R.string.share_title_template ) );
-			i.putExtra( Intent.EXTRA_TEXT,
-						getString( anupam.acrylic.R.string.share_text_template ) );
-			i.putExtra( Intent.EXTRA_STREAM, Uri.fromFile( screenshotPath ) );
-			try {
-				startActivity( Intent.createChooser( i,
-													 getString( anupam.acrylic.R.string.toolbox_share_title ) ) );
-			} catch( android.content.ActivityNotFoundException ex ) {
-				Toast.makeText( this.getApplicationContext( ),
-								anupam.acrylic.R.string.no_way_to_share,
-								Toast.LENGTH_LONG ).show( );
+			case R.id.extract_color_menu: {
+				Toast.makeText(getApplicationContext(),
+							   R.string.tap_to_extract_color,
+							   Toast.LENGTH_LONG).show();
+				extractingColor = true;
+				return true;
 			}
-			break;
-		}
-		case R.id.open_image_menu: {
-			Intent intent = new Intent( );
-			intent.setType( "image/*" ); //The argument is an all-lower-case MIME type - in this case, any image format.
-			intent.setAction( Intent.ACTION_GET_CONTENT );
-			intent.putExtra( Intent.EXTRA_ALLOW_MULTIPLE, false ); //This is false by default, but I felt that for code clarity it was better to be explicit: we only want one image
-			startActivityForResult( Intent.createChooser( intent, getResources().getString( R.string.select_image_to_open ) ), CHOOSE_IMAGE );
-			break;
-		}
-		case R.id.fill_background_with_color: {
-			waitingForBackgroundColor = true;
-			new ColorPickerDialog( this, this, contentView.mBitmapBackground.getPixel( 0, 0 ) ).show();
-			return true;
-		}
-		case R.id.about_menu:
-			startActivity(new Intent(this, AboutActivity.class));
-			break;
+			case R.id.normal_brush_menu:
+				mPaint.setMaskFilter(null);
+				return true;
+			case R.id.color_menu:
+				new ColorPickerDialog(this, this, mPaint.getColor()).show();
+				return true;
+			case R.id.emboss_menu:
+				mPaint.setMaskFilter(mEmboss);
+				return true;
+			case R.id.blur_menu:
+				mPaint.setMaskFilter(mBlur);
+				return true;
+			case R.id.size_menu: {
+				LayoutInflater inflater = ( LayoutInflater ) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+				View layout = inflater.inflate( R.layout.brush,
+												( ViewGroup ) findViewById( R.id.root ) );
+				AlertDialog.Builder builder = new AlertDialog.Builder( this )
+						.setView( layout );
+				builder.setTitle( R.string.choose_width );
+				final AlertDialog alertDialog = builder.create( );
+				alertDialog.show( );
+				SeekBar sb = ( SeekBar ) layout.findViewById( R.id.brushSizeSeekBar );
+				sb.setProgress( getStrokeSize( ) );
+				final TextView txt = ( TextView ) layout
+						.findViewById( R.id.sizeValueTextView );
+				txt.setText( String.format(
+						getResources( ).getString( R.string.your_selected_size_is ),
+						getStrokeSize( ) + 1 ) );
+				sb.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener( ) {
+					public void onProgressChanged( SeekBar seekBar,
+												   final int progress, boolean fromUser ) {
+						// Do something here with new value
+						mPaint.setStrokeWidth( progress );
+						txt.setText( String.format(
+								getResources( ).getString(
+										R.string.your_selected_size_is ), progress + 1 ) );
+					}
+	
+					@Override
+					public void onStartTrackingTouch( SeekBar seekBar ) {
+						// TODO Auto-generated method stub
+					}
+	
+					@Override
+					public void onStopTrackingTouch( SeekBar seekBar ) {
+						// TODO Auto-generated method stub
+					}
+				} );
+				return true;
+			}
+			case R.id.erase_menu: {
+				LayoutInflater inflater_e = ( LayoutInflater ) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+				View layout_e = inflater_e.inflate( R.layout.brush,
+													( ViewGroup ) findViewById( R.id.root ) );
+				AlertDialog.Builder builder_e = new AlertDialog.Builder( this )
+						.setView( layout_e );
+				builder_e.setTitle( R.string.choose_width );
+				final AlertDialog alertDialog_e = builder_e.create( );
+				alertDialog_e.show( );
+				SeekBar sb_e = ( SeekBar ) layout_e.findViewById( R.id.brushSizeSeekBar );
+				sb_e.setProgress( getStrokeSize( ) );
+				final TextView txt_e = ( TextView ) layout_e
+						.findViewById( R.id.sizeValueTextView );
+				txt_e.setText( String.format(
+						getResources( ).getString( R.string.your_selected_size_is ),
+						getStrokeSize( ) + 1 ) );
+				sb_e.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener( ) {
+					public void onProgressChanged( SeekBar seekBar,
+												   final int progress, boolean fromUser ) {
+						// Do something here with new value
+						mPaint.setStrokeWidth( progress );
+						txt_e.setText( String.format(
+								getResources( ).getString(
+										R.string.your_selected_size_is ), progress + 1 ) );
+					}
+	
+					public void onStartTrackingTouch( SeekBar seekBar ) {
+						// TODO Auto-generated method stub
+					}
+	
+					public void onStopTrackingTouch( SeekBar seekBar ) {
+						// TODO Auto-generated method stub
+					}
+				} );
+				//mPaint.setColor(bgColor);
+				mPaint.setXfermode( new PorterDuffXfermode( Mode.CLEAR ) );
+				return true;
+			}
+			case R.id.clear_all_menu: {
+				contentView.mBitmap.eraseColor( Color.TRANSPARENT );
+				return true;
+			}
+			case R.id.save_menu:
+				takeScreenshot(true);
+				break;
+			case R.id.share_menu: {
+				File screenshotPath = takeScreenshot( false );
+				Intent i = new Intent( );
+				i.setAction( Intent.ACTION_SEND );
+				i.setType( "image/png" );
+				i.putExtra( Intent.EXTRA_SUBJECT,
+							getString( anupam.acrylic.R.string.share_title_template ) );
+				i.putExtra( Intent.EXTRA_TEXT,
+							getString( anupam.acrylic.R.string.share_text_template ) );
+				i.putExtra( Intent.EXTRA_STREAM, Uri.fromFile( screenshotPath ) );
+				try {
+					startActivity( Intent.createChooser( i,
+														 getString( anupam.acrylic.R.string.toolbox_share_title ) ) );
+				} catch( android.content.ActivityNotFoundException ex ) {
+					Toast.makeText( this.getApplicationContext( ),
+									anupam.acrylic.R.string.no_way_to_share,
+									Toast.LENGTH_LONG ).show( );
+				}
+				break;
+			}
+			case R.id.open_image_menu: {
+				Intent intent = new Intent( );
+				intent.setType( "image/*" ); //The argument is an all-lower-case MIME type - in this case, any image format.
+				intent.setAction( Intent.ACTION_GET_CONTENT );
+				intent.putExtra( Intent.EXTRA_ALLOW_MULTIPLE, false ); //This is false by default, but I felt that for code clarity it was better to be explicit: we only want one image
+				startActivityForResult( Intent.createChooser( intent, getResources().getString( R.string.select_image_to_open ) ), CHOOSE_IMAGE );
+				break;
+			}
+			case R.id.fill_background_with_color: {
+				waitingForBackgroundColor = true;
+				new ColorPickerDialog( this, this, contentView.mBitmapBackground.getPixel( 0, 0 ) ).show();
+				return true;
+			}
+			case R.id.about_menu:
+				startActivity(new Intent(this, AboutActivity.class));
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
