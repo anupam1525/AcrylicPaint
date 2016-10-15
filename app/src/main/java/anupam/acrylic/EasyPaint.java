@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014, 2016 Valerio Bozzolan & James Dearing
+ * Copyright (C) 2014, 2016 Valerio Bozzolan & James Dearing (TheOpenSourceNinja)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapShader;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -41,10 +42,17 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.Shader;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -159,7 +167,7 @@ public class EasyPaint extends GraphicsActivity implements
 
 	public class MyView extends View {
 
-		private Bitmap mBitmap;
+		public Bitmap mBitmap;
 		private Bitmap mBitmapBackground;
 		private Canvas mCanvas;
 		private Paint mBitmapPaint;
@@ -378,15 +386,60 @@ public class EasyPaint extends GraphicsActivity implements
 				return true;
 			}
 			case R.id.normal_brush_menu:
+				mPaint.setShader( null );
 				mPaint.setMaskFilter(null);
 				return true;
 			case R.id.color_menu:
 				new ColorPickerDialog(this, this, mPaint.getColor()).show();
 				return true;
 			case R.id.emboss_menu:
+				mPaint.setShader( null );
 				mPaint.setMaskFilter(mEmboss);
 				return true;
+			case R.id.smudge_menu: {
+				/* I considered making this what happens when the blur_menu item is selected, but
+				 * that could surprise users who are used to blur_menu's previous functionality, so
+				 * I made this new smudge_menu item instead. I don't like calling it "Smudge" because
+				 * this isn't exactly the same as what Photoshop and GIMP refer to as "Smudge", but I
+				 * couldn't think of a better name that isn't "Blur".
+				 * ~TheOpenSourceNinja
+				 */
+				if( Build.VERSION.SDK_INT >= 17 ) {
+					/* Basically what we're doing here is copying the entire foreground bitmap,
+					 * blurring it, then telling mPaint to use that instead of a solid color.
+					 */
+					
+					RenderScript rs = RenderScript.create( getApplicationContext( ) );
+					ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.RGBA_8888( rs ) );
+					script.setRadius( 20f ); //The radius must be between 0 and 25. Smaller radius means less blur. I just picked 20 randomly. ~TheOpenSourceNinja
+					
+					//copy the foreground: (n API level 18+, this will be really fast because it uses a shared memory model, thus not really copying everything)
+					Allocation input = Allocation.createFromBitmap( rs, contentView.mBitmap );
+					script.setInput( input );
+					
+					//allocate memory for the output:
+					Allocation output = Allocation.createTyped( rs, input.getType( ) );
+					
+					//Blur the image:
+					script.forEach( output );
+					
+					//Store the blurred image as a Bitmap object:
+					Bitmap blurred = Bitmap.createBitmap( contentView.mBitmap );
+					output.copyTo( blurred );
+					
+					//Tell mPaint to use the blurred image:
+					Shader shader = new BitmapShader( blurred, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP );
+					mPaint.setShader( shader );
+					return true;
+				} else {
+					Toast.makeText( this.getApplicationContext( ),
+									anupam.acrylic.R.string.ability_disabled_need_newer_api_level,
+									Toast.LENGTH_LONG ).show( );
+					return true;
+				}
+			}
 			case R.id.blur_menu:
+				mPaint.setShader( null );
 				mPaint.setMaskFilter(mBlur);
 				return true;
 			case R.id.size_menu: {
@@ -461,7 +514,7 @@ public class EasyPaint extends GraphicsActivity implements
 						// TODO Auto-generated method stub
 					}
 				} );
-				//mPaint.setColor(bgColor);
+				mPaint.setShader( null );
 				mPaint.setXfermode( new PorterDuffXfermode( Mode.CLEAR ) );
 				return true;
 			}
