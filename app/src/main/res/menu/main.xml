@@ -48,6 +48,12 @@
         android:title="@string/blur">
     </item>
     <item
+        android:id="@+id/smudge_menu"
+        android:icon="@+drawable/smudge"
+        android:showAsAction="ifRoom"
+        android:title="@string/smudge">
+    </item>
+    <item
         android:id="@+id/save_menu"
         android:icon="@+drawable/save"
         android:showAsAction="ifRoom"
