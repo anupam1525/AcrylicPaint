@@ -7,6 +7,11 @@
         android:showAsAction="ifRoom"
         android:title="@string/color"/>
     <item
+        android:id="@+id/extract_color_menu"
+        android:icon="@+drawable/extract_color"
+        android:showAsAction="ifRoom"
+        android:title="@string/extract_color"/>
+    <item
         android:id="@+id/size_menu"
         android:icon="@+drawable/size"
         android:showAsAction="ifRoom"

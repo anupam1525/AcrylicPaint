@@ -57,5 +57,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public 
     ]]>
     </string>
     <string name="select_image_to_open">Select image to open</string>
+    <string name="extract_color">Extract a color</string>
+    <string name="color_extracted">New color extracted</string>
+    <string name="tap_to_extract_color">Tap anywhere to extract a color</string>
 
 </resources>
