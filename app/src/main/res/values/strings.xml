@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Acrylic Paint</string>
-    <string name="app_description">Acrylic Paint is a Free and Open Source Software that free your creativity!\n\nPress menu for more options.\n\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the terrific support. Thanks to all the contributors!\n\nHappy painting :)</string>
+    <string name="app_description">Acrylic Paint is a Free and Open Source Software that frees your creativity!\n\nPress menu for more options.\n\nThanks to Anupam Shrivastava for the idea, to Valerio Bozzolan for reviving the project and the physicist Marco Gagino for the terrific support. Thanks to all the contributors!\n\nHappy painting :)</string>
     <string name="here_is_your_canvas">Here is your canvas. Start to paint!</string>
     <string name="color">Color</string>
     <string name="emboss">Bold</string>
@@ -44,7 +44,7 @@
 <h2>Licenses</h2>
 <p>This version of Acrylic Paint and its source code are released by <a href="https://boz.reyboz.it">Valerio Bozzolan</a> under the
 terms of the <i>GNU GPLv3+</i> license.
-This license gives everyone the ability to use, study, better and share this app with <b>any means</b> and for <b>every purpose</b> as long as you offer these same rights to the others.</p>
+This license gives everyone the ability to use, study, better and share this app by <b>any means</b> and for <b>every purpose</b> as long as you offer these same rights to the others.</p>
 <p>This app is distributed <b>in the hope that it will be useful to everyone</b>, but without any warranty; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
 
