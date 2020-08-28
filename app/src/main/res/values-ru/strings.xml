@@ -12,7 +12,7 @@
     <string name="erase">Стереть</string>
     <string name="here_is_your_canvas">Вот ваш холст. Начните рисовать!</string>
     <string name="no_way_to_share">Не удаётся найти приложение, чтобы поделиться с…</string>
-    <string name="normal">Карандаш</string>
+    <string name="brush">Карандаш</string>
     <string name="ok">Ок</string>
     <string name="pick_color">Выбрать цвет</string>
     <string name="press_back_again">Нажмите кнопку НАЗАД снова, чтобы выйти из программы!\n(Несохранённая работа будет потеряна)</string>

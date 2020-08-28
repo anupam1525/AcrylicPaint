@@ -2,8 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/color_menu"
-        android:icon="@drawable/color"
+        android:id="@+id/brush_menu"
+        android:icon="@drawable/brush"
+        android:showAsAction="always"
+        android:title="@string/brush" />
+    <item
+        android:id="@+id/erase_menu"
+        android:icon="@drawable/erase"
+        android:showAsAction="always"
+        android:title="@string/erase" />
+    <item
+        android:id="@+id/palette_menu"
+        android:icon="@drawable/palette"
         android:showAsAction="ifRoom"
         android:title="@string/color" />
     <item
@@ -16,21 +26,6 @@
         android:icon="@drawable/size"
         android:showAsAction="ifRoom"
         android:title="@string/brush_size" />
-    <item
-        android:id="@+id/erase_menu"
-        android:icon="@drawable/erase"
-        android:showAsAction="ifRoom"
-        android:title="@string/erase" />
-    <item
-        android:id="@+id/clear_all_menu"
-        android:icon="@drawable/clear_all"
-        android:showAsAction="ifRoom"
-        android:title="@string/clear_all" />
-    <item
-        android:id="@+id/normal_brush_menu"
-        android:icon="@drawable/size"
-        android:showAsAction="ifRoom"
-        android:title="@string/normal" />
     <item
         android:id="@+id/emboss_menu"
         android:icon="@drawable/emboss"
@@ -47,6 +42,21 @@
         android:showAsAction="ifRoom"
         android:title="@string/smudge" />
     <item
+        android:id="@+id/fill_background_with_color"
+        android:icon="@drawable/fill_background_with_color"
+        android:showAsAction="ifRoom"
+        android:title="@string/fill_background_with_color" />
+    <item
+        android:id="@+id/clear_all_menu"
+        android:icon="@drawable/clear_all"
+        android:showAsAction="ifRoom"
+        android:title="@string/clear_all" />
+    <item
+        android:id="@+id/open_image_menu"
+        android:icon="@drawable/import_image"
+        android:showAsAction="ifRoom"
+        android:title="@string/open_image" />
+    <item
         android:id="@+id/save_menu"
         android:icon="@drawable/save"
         android:showAsAction="ifRoom"
@@ -56,16 +66,6 @@
         android:icon="@drawable/share"
         android:showAsAction="ifRoom"
         android:title="@string/share" />
-    <item
-        android:id="@+id/open_image_menu"
-        android:icon="@drawable/import_image"
-        android:showAsAction="ifRoom"
-        android:title="@string/open_image" />
-    <item
-        android:id="@+id/fill_background_with_color"
-        android:icon="@drawable/fill_background_with_color"
-        android:showAsAction="ifRoom"
-        android:title="@string/fill_background_with_color" />
     <item
         android:id="@+id/about_menu"
         android:icon="@drawable/about"

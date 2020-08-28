@@ -25,7 +25,7 @@
     <string name="share_title_template">Schau mal, was ich mit der Acrylmalerei gemalt habe! --- Acrylic Paint (Einfaches Fingermalen) - https://f-droid.org/app/anupam.acrylic</string>
     <string name="share_text_template">Als Text teilen</string>
     <string name="no_way_to_share">Ich kann keine App zum Teilen finden…</string>
-    <string name="normal">Pinsel</string>
+    <string name="brush">Pinsel</string>
     <string name="title_activity_about">Über</string>
     <string name="press_back_again">Nochmal Zurück drücken um zu schließen!\n(Alles ungespeicherte geht verloren)</string>
     <string name="select_image_to_open">Bild zum Öffnen wählen</string>

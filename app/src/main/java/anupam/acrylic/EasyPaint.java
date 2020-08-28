@@ -18,7 +18,6 @@
 package anupam.acrylic;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -39,7 +38,6 @@ import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -187,11 +185,11 @@ public class EasyPaint extends GraphicsActivity implements
                 extractingColor = true;
                 return true;
             }
-            case R.id.normal_brush_menu:
+            case R.id.brush_menu:
                 mPaint.setShader(null);
                 mPaint.setMaskFilter(null);
                 return true;
-            case R.id.color_menu:
+            case R.id.palette_menu:
                 new ColorPickerDialog(this, this, mPaint.getColor()).show();
                 return true;
             case R.id.emboss_menu:
