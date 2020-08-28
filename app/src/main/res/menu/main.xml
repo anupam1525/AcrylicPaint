@@ -15,61 +15,61 @@
         android:id="@+id/size_menu"
         android:icon="@drawable/size"
         android:showAsAction="ifRoom"
-        android:title="@string/brush_size"></item>
+        android:title="@string/brush_size" />
     <item
         android:id="@+id/erase_menu"
         android:icon="@drawable/erase"
         android:showAsAction="ifRoom"
-        android:title="@string/erase"></item>
+        android:title="@string/erase" />
     <item
         android:id="@+id/clear_all_menu"
         android:icon="@drawable/clear_all"
         android:showAsAction="ifRoom"
-        android:title="@string/clear_all"></item>
+        android:title="@string/clear_all" />
     <item
         android:id="@+id/normal_brush_menu"
         android:icon="@drawable/size"
         android:showAsAction="ifRoom"
-        android:title="@string/normal"></item>
+        android:title="@string/normal" />
     <item
         android:id="@+id/emboss_menu"
         android:icon="@drawable/emboss"
         android:showAsAction="ifRoom"
-        android:title="@string/emboss"></item>
+        android:title="@string/emboss" />
     <item
         android:id="@+id/blur_menu"
         android:icon="@drawable/blur"
         android:showAsAction="ifRoom"
-        android:title="@string/blur"></item>
+        android:title="@string/blur" />
     <item
         android:id="@+id/smudge_menu"
         android:icon="@drawable/smudge"
         android:showAsAction="ifRoom"
-        android:title="@string/smudge"></item>
+        android:title="@string/smudge" />
     <item
         android:id="@+id/save_menu"
         android:icon="@drawable/save"
         android:showAsAction="ifRoom"
-        android:title="@string/save"></item>
+        android:title="@string/save" />
     <item
         android:id="@+id/share_menu"
         android:icon="@drawable/share"
         android:showAsAction="ifRoom"
-        android:title="@string/share"></item>
+        android:title="@string/share" />
     <item
         android:id="@+id/open_image_menu"
         android:icon="@drawable/import_image"
         android:showAsAction="ifRoom"
-        android:title="@string/open_image"></item>
+        android:title="@string/open_image" />
     <item
         android:id="@+id/fill_background_with_color"
         android:icon="@drawable/fill_background_with_color"
         android:showAsAction="ifRoom"
-        android:title="@string/fill_background_with_color"></item>
+        android:title="@string/fill_background_with_color" />
     <item
         android:id="@+id/about_menu"
         android:icon="@drawable/about"
         android:showAsAction="ifRoom"
-        android:title="@string/about"></item>
+        android:title="@string/about" />
 
 </menu>

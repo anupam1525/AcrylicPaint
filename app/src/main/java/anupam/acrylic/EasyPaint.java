@@ -20,8 +20,8 @@ package anupam.acrylic;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
+import android.renderscript.RSIllegalArgumentException;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
@@ -116,14 +117,9 @@ public class EasyPaint extends GraphicsActivity implements
             alert.setTitle(R.string.app_name);
             alert.setMessage(R.string.app_description);
             alert.setNegativeButton(R.string.continue_fuck,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.here_is_your_canvas,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    (dialog, whichButton) -> Toast.makeText(getApplicationContext(),
+                            R.string.here_is_your_canvas,
+                            Toast.LENGTH_SHORT).show());
 
             alert.show();
         } else {
@@ -145,22 +141,16 @@ public class EasyPaint extends GraphicsActivity implements
         Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_SHORT)
                 .show();
 
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 3000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 3000);
     }
 
     public void colorChanged(int color) {
         if (waitingForBackgroundColor) {
             waitingForBackgroundColor = false;
             contentView.mBitmapBackground.eraseColor(color);
-            //int[] colors = new int[ 1 ];
-            //colors[ 0 ] = color;
-            //contentView.mBitmapBackground = Bitmap.createBitmap( colors, contentView.mBitmapBackground.getWidth(), contentView.mBitmapBackground.getHeight(), contentView.mBitmapBackground.getConfig() );
+            //int[] colors = new int[1];
+            //colors[0] = color;
+            //contentView.mBitmapBackground = Bitmap.createBitmap(colors, contentView.mBitmapBackground.getWidth(), contentView.mBitmapBackground.getHeight(), contentView.mBitmapBackground.getConfig());
         } else {
             // Changes the color of the action bar when the pencil color is changed
             if (Build.VERSION.SDK_INT >= 11) {
@@ -227,7 +217,7 @@ public class EasyPaint extends GraphicsActivity implements
                     ScriptIntrinsicBlur script;
                     try {
                         script = ScriptIntrinsicBlur.create(rs, Element.RGBA_8888(rs));
-                    } catch (android.renderscript.RSIllegalArgumentException e) {
+                    } catch (RSIllegalArgumentException e) {
                         script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
                     }
                     script.setRadius(20f); //The radius must be between 0 and 25. Smaller radius means less blur. I just picked 20 randomly. ~TheOpenSourceNinja
@@ -249,13 +239,12 @@ public class EasyPaint extends GraphicsActivity implements
                     //Tell mPaint to use the blurred image:
                     Shader shader = new BitmapShader(blurred, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                     mPaint.setShader(shader);
-                    return true;
                 } else {
                     Toast.makeText(this.getApplicationContext(),
                             anupam.acrylic.R.string.ability_disabled_need_newer_api_level,
                             Toast.LENGTH_LONG).show();
-                    return true;
                 }
+                return true;
             }
             case R.id.blur_menu:
                 mPaint.setShader(null);
@@ -357,7 +346,7 @@ public class EasyPaint extends GraphicsActivity implements
                 try {
                     startActivity(Intent.createChooser(i,
                             getString(anupam.acrylic.R.string.toolbox_share_title)));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(this.getApplicationContext(),
                             anupam.acrylic.R.string.no_way_to_share,
                             Toast.LENGTH_LONG).show();
@@ -394,7 +383,7 @@ public class EasyPaint extends GraphicsActivity implements
         Bitmap copyBitmap = cachedBitmap.copy(Bitmap.Config.RGB_565, true);
         v.destroyDrawingCache();
         FileOutputStream output = null;
-        File file = null;
+        File file;
         try {
             File path = Places.getScreenshotFolder();
             Calendar cal = Calendar.getInstance();
@@ -463,11 +452,10 @@ public class EasyPaint extends GraphicsActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_CANCELED) { //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
-            switch (requestCode) {
-                case CHOOSE_IMAGE: {
-                    setBackgroundUri(data.getData());
-                }
+        if (resultCode != RESULT_CANCELED) {
+            //"The resultCode will be RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or crashed during its operation." (quote from https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int,%20int,%20android.content.Intent) )
+            if (requestCode == CHOOSE_IMAGE) {
+                setBackgroundUri(data.getData());
             }
         }
     }
@@ -480,9 +468,8 @@ public class EasyPaint extends GraphicsActivity implements
         try {
             //I don't like loading both full-sized and reduced-size copies of the image (the larger copy can use a lot of memory), but I couldn't find any other way to do this.
             Bitmap fullsize = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            Bitmap resized = Bitmap.createScaledBitmap(fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true);
-            contentView.mBitmapBackground = resized;
-            //contentView.mCanvas = new Canvas( contentView.mBitmapBackground );
+            contentView.mBitmapBackground = Bitmap.createScaledBitmap(fullsize, contentView.mBitmap.getWidth(), contentView.mBitmap.getHeight(), true);
+            //contentView.mCanvas = new Canvas(contentView.mBitmapBackground);
         } catch (IOException exception) {
             //TODO: How should we handle this exception?
         }
