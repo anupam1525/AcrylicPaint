@@ -153,13 +153,11 @@ public class EasyPaint extends GraphicsActivity implements
             //contentView.mBitmapBackground = Bitmap.createBitmap(colors, contentView.mBitmapBackground.getWidth(), contentView.mBitmapBackground.getHeight(), contentView.mBitmapBackground.getConfig());
         } else {
             // Changes the color of the action bar when the pencil color is changed
-            if (Build.VERSION.SDK_INT >= 11) {
-                ActionBar actionBar = getActionBar();
-                ColorDrawable colorDrawable = new ColorDrawable(color);
-                actionBar.setBackgroundDrawable(colorDrawable);
-            }
+            // TODO: Figure out how to deal with choosing white color
+            /*ActionBar actionBar = getActionBar();
+            ColorDrawable colorDrawable = new ColorDrawable(color);
+            actionBar.setBackgroundDrawable(colorDrawable);*/
             mPaint.setColor(color);
-
         }
     }
 
