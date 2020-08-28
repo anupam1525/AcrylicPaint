@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="anupam.acrylic"
-    android:versionCode="17"
-    android:versionName="2.3.0" >
+    package="anupam.acrylic">
 
     <supports-screens
         android:anyDensity="true"
