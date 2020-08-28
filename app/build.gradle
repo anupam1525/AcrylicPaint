@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 28
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "anupam.acrylic"
         minSdkVersion 14
-        targetSdkVersion 26
+        // TODO: Add permission check for external storage (23+)
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 22
         versionCode 17
         versionName "2.3.0"
     }
