@@ -7,9 +7,10 @@ android {
     defaultConfig {
         applicationId "anupam.acrylic"
         minSdkVersion 14
-        // TODO: Add permission check for external storage (23+)
-        //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 22
+        // Figure out stupid garbage Scoped Storage for 29+
+        // https://developer.android.com/preview/privacy/storage#scoped-storage
+        //noinspection OldTargetApi
+        targetSdkVersion 28
         versionCode 17
         versionName "2.3.0"
     }
@@ -31,4 +32,8 @@ android {
         disable 'GoogleAppIndexingWarning'
         abortOnError false
     }
+}
+
+dependencies {
+    implementation 'com.nabinbhandari.android:permissions:3.8'
 }

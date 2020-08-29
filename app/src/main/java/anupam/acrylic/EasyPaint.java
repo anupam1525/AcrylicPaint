@@ -17,6 +17,7 @@
 
 package anupam.acrylic;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -24,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapShader;
@@ -59,6 +61,9 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -369,10 +374,31 @@ public class EasyPaint extends GraphicsActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean isWritePermissionGranted() {
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED;
+    }
+
     /**
      * This takes the screenshot of the whole screen. Is this a good thing?
      */
     private File takeScreenshot(boolean showToast) {
+        // First we must check that permission has been granted, and if not, ask
+        if (isWritePermissionGranted()) {
+            // Do nothing.
+        } else {
+            Permissions.check(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, null,
+                    new PermissionHandler() {
+                        @Override
+                        public void onGranted() {
+                            new AlertDialog.Builder(EasyPaint.this)
+                                    .setMessage("Thanks for granting permission! Please press save again.")
+                                    .show();
+                        }
+                    });
+        }
+
         View v = findViewById(R.id.CanvasId);
         v.setDrawingCacheEnabled(true);
         Bitmap cachedBitmap = v.getDrawingCache();
