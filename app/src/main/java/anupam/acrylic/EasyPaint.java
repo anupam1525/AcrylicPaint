@@ -242,7 +242,7 @@ public class EasyPaint extends GraphicsActivity implements
                     mPaint.setShader(shader);
                 } else {
                     Toast.makeText(this.getApplicationContext(),
-                            anupam.acrylic.R.string.ability_disabled_need_newer_api_level,
+                            R.string.ability_disabled_need_newer_api_level,
                             Toast.LENGTH_LONG).show();
                 }
                 return true;
@@ -327,8 +327,17 @@ public class EasyPaint extends GraphicsActivity implements
                 mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
                 return true;
             }
-            case R.id.clear_all_menu: {
+            case R.id.clear_foreground_submenu: {
                 contentView.mBitmap.eraseColor(Color.TRANSPARENT);
+                return true;
+            }
+            case R.id.clear_background_submenu: {
+                contentView.mBitmapBackground.eraseColor(Color.TRANSPARENT);
+                return true;
+            }
+            case R.id.clear_everything_submenu: {
+                contentView.mBitmap.eraseColor(Color.TRANSPARENT);
+                contentView.mBitmapBackground.eraseColor(Color.TRANSPARENT);
                 return true;
             }
             case R.id.save_menu:
@@ -340,16 +349,16 @@ public class EasyPaint extends GraphicsActivity implements
                 i.setAction(Intent.ACTION_SEND);
                 i.setType("image/png");
                 i.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(anupam.acrylic.R.string.share_title_template));
+                        getString(R.string.share_title_template));
                 i.putExtra(Intent.EXTRA_TEXT,
-                        getString(anupam.acrylic.R.string.share_text_template));
+                        getString(R.string.share_text_template));
                 i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(screenshotPath));
                 try {
                     startActivity(Intent.createChooser(i,
-                            getString(anupam.acrylic.R.string.toolbox_share_title)));
+                            getString(R.string.toolbox_share_title)));
                 } catch (ActivityNotFoundException ex) {
                     Toast.makeText(this.getApplicationContext(),
-                            anupam.acrylic.R.string.no_way_to_share,
+                            R.string.no_way_to_share,
                             Toast.LENGTH_LONG).show();
                 }
                 break;

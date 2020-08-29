@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Acrylic Paint</string>
     <string name="about">О программе</string>
     <string name="blur">Размытие</string>
     <string name="brush_size">Размер кисти</string>
     <string name="choose_width">Размер кисти</string>
-    <string name="clear_all">Стереть всё</string>
+    <string name="clear_background">Стереть только фон</string>
+    <string name="clear_everything">Стереть всё</string>
+    <string name="clear_foreground">Стереть передний план</string>
     <string name="color">Цвет</string>
     <string name="continue_fuck">Продолжить</string>
     <string name="emboss">Жирный</string>
     <string name="erase">Стереть</string>
+    <string name="fill_background_with_color">Заполните фон цветом</string>
     <string name="here_is_your_canvas">Вот ваш холст. Начните рисовать!</string>
     <string name="no_way_to_share">Не удаётся найти приложение, чтобы поделиться с…</string>
     <string name="brush">Карандаш</string>
     <string name="ok">Ок</string>
+    <string name="open_image">Открытое изображение в качестве фона</string>
     <string name="pick_color">Выбрать цвет</string>
     <string name="press_back_again">Нажмите кнопку НАЗАД снова, чтобы выйти из программы!\n(Несохранённая работа будет потеряна)</string>
     <string name="save">Сохранить</string>
@@ -21,7 +24,7 @@
     <string name="select">Выбрать</string>
     <string name="share">Поделиться</string>
     <string name="share_text_template">Поделиться в виде текста</string>
-    <string name="share_title_template">Посмотрите на то, что я нарисовал с помощью Acrylic Paint! --- Acrylic Paint (Простое рисование пальцем) - https://f-droid.org/app/anupam.acrylic</string>
+    <string name="share_title_template">Посмотрите на то, что я нарисовал с помощью Acrylic Paint! --- Acrylic Paint (Простое рисование пальцем) - https://f-droid.org/packages/anupam.acrylic/</string>
     <string name="title_activity_about">О программе</string>
     <string name="toolbox_share_title">Поделиться</string>
     <string name="your_selected_size_is">Выбранный размер: %1$d</string>
@@ -53,4 +56,12 @@
 <p>Удачи!</p>
     ]]>
     </string>
+
+    <string name="select_image_to_open">Выберите изображение для открытия</string>
+    <string name="extract_color">Цвет экстракта (эйроппер)</string>
+    <string name="color_extracted">Новый цвет извлечён</string>
+    <string name="tap_to_extract_color">Нажмите в любом месте, чтобы извлечь цвет</string>
+    <string name="ability_disabled_need_newer_api_level">Эта возможность отключена, потому что для ее использования требуется более новая версия Android (по крайней мере, уровень API 17).</string>
+    <string name="smudge">Размазывание</string>
+    <string name="clear_options">Параметры удаления</string>
 </resources>

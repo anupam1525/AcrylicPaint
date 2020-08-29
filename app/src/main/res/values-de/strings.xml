@@ -8,7 +8,9 @@
     <string name="blur">Unschärfe</string>
     <string name="brush_size">Pinselgröße</string>
     <string name="erase">Löschen</string>
-    <string name="clear_all">Vordergrund löschen</string>
+    <string name="clear_background">Nur Hintergrund löschen</string>
+    <string name="clear_everything">Alles löschen</string>
+    <string name="clear_foreground">Vordergrund löschen</string>
     <string name="save">Speichern</string>
     <string name="share">Teilen</string>
     <string name="about">Über</string>
@@ -22,16 +24,45 @@
     <string name="ok">OK</string>
     <string name="pick_color">Wähle eine Farbe</string>
     <string name="toolbox_share_title">Teilen</string>
-    <string name="share_title_template">Schau mal, was ich mit der Acrylmalerei gemalt habe! --- Acrylic Paint (Einfaches Fingermalen) - https://f-droid.org/app/anupam.acrylic</string>
+    <string name="share_title_template">Schau mal, was ich mit der Acrylmalerei gemalt habe! --- Acrylic Paint (Einfaches Fingermalen) - https://f-droid.org/packages/anupam.acrylic/</string>
     <string name="share_text_template">Als Text teilen</string>
     <string name="no_way_to_share">Ich kann keine App zum Teilen finden…</string>
     <string name="brush">Pinsel</string>
     <string name="title_activity_about">Über</string>
     <string name="press_back_again">Nochmal Zurück drücken um zu schließen!\n(Alles ungespeicherte geht verloren)</string>
     <string name="select_image_to_open">Bild zum Öffnen wählen</string>
-    <string name="extract_color">Farbe aus dem Bild holen</string>
+    <string name="extract_color">Farbe aus dem Bild holen (Pipette)</string>
     <string name="color_extracted">Neue Farbe in Benutzung</string>
     <string name="tap_to_extract_color">Klicke irgendwo hin, um die Farbe zu benutzen</string>
     <string name="ability_disabled_need_newer_api_level">Das kann ich nicht, weil das Android zu alt ist und mindestens API-Version 17 dafür haben muss.</string>
     <string name="smudge">Schmieren</string>
+
+    <string name="about_description">
+<![CDATA[
+<h1>Acrylic Paint</h1>
+<p>Thanks for using Acrylic Paint!<br />This is a <b>free and open-source software</b> to free your creativity!</p>
+
+<h2>Credits</h2>
+<p>Special thanks to:<br>
+<b><a href="https://github.com/anupam1525>Anupam Shrivastava</a></b> for the former version of Acrylic Paint. He's inactive now.<br>
+<b><a href="https://github.com/valerio-bozzolan">Valerio Bozzolan</a></b> for the great work done reviewing the source code and optimising it. He currently carries on the work for this version of Acrylic Paint.<br>
+<b><a href="https://github.com/marcogagino-22">Marco Gagino</a></b> for the thorough restyling and the great participation!
+</p>
+
+<h2>Licenses</h2>
+<p>This version of Acrylic Paint and its source code are released by <a href="https://boz.reyboz.it">Valerio Bozzolan</a> under the
+terms of the <i>GNU GPLv3+</i> license.
+This license gives everyone the ability to use, study, better, and share this app by <b>any means</b> and for <b>every purpose</b> as long as you offer these same rights to others.</p>
+<p>This app is distributed <b>in the hopes that it will be useful to everyone</b>, but without any warranty; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+
+<h2>Note</h2>
+<p>If you notice any problem or if you have some ideas, feel free to use the <a href="https://github.com/valerio-bozzolan/AcrylicPaint/issues">issue tracker</a>.</p>
+<p>Contribute to the source code: <a href="https://github.com/valerio-bozzolan/AcrylicPaint">valerio-bozzolan/AcrylicPaint</a> @GitHub.</p>
+<p>Read the <a href="https://github.com/valerio-bozzolan/AcrylicPaint/blob/master/README.md">README</a> file for further information.</p>
+
+<p>Have fun!</p>
+    ]]>
+    </string>
+    <string name="clear_options">Optionen zum Löschen</string>
 </resources>
