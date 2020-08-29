@@ -64,5 +64,6 @@ COMMERCIALISATION ou D\'ADAPTATION A UN USAGE PARTICULIER. Voir la Licence Publi
     <string name="ability_disabled_need_newer_api_level">Cette capacité est désactivée car elle nécessite une version plus récente d\'Android (au moins le niveau 17 de l\'API).</string>
     <string name="smudge">Smudge</string>
     <string name="clear_options">Options d\'effacement</string>
+    <string name="drawing_effects">Effets de dessin</string>
 
 </resources>

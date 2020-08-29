@@ -26,21 +26,28 @@
         android:icon="@drawable/size"
         android:showAsAction="ifRoom"
         android:title="@string/brush_size" />
+
     <item
-        android:id="@+id/emboss_menu"
-        android:icon="@drawable/emboss"
+        android:id="@+id/effects_menu"
+        android:icon="@drawable/effects"
         android:showAsAction="ifRoom"
-        android:title="@string/emboss" />
-    <item
-        android:id="@+id/blur_menu"
-        android:icon="@drawable/blur"
-        android:showAsAction="ifRoom"
-        android:title="@string/blur" />
-    <item
-        android:id="@+id/smudge_menu"
-        android:icon="@drawable/smudge"
-        android:showAsAction="ifRoom"
-        android:title="@string/smudge" />
+        android:title="@string/drawing_effects">
+        <menu>
+            <item
+                android:id="@+id/emboss_submenu"
+                android:showAsAction="never"
+                android:title="@string/emboss" />
+            <item
+                android:id="@+id/blur_submenu"
+                android:showAsAction="never"
+                android:title="@string/blur" />
+            <item
+                android:id="@+id/smudge_submenu"
+                android:showAsAction="never"
+                android:title="@string/smudge" />
+        </menu>
+    </item>
+
     <item
         android:id="@+id/fill_background_with_color"
         android:icon="@drawable/fill_background_with_color"

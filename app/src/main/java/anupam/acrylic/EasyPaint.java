@@ -197,11 +197,11 @@ public class EasyPaint extends GraphicsActivity implements
             case R.id.palette_menu:
                 new ColorPickerDialog(this, this, mPaint.getColor()).show();
                 return true;
-            case R.id.emboss_menu:
+            case R.id.emboss_submenu:
                 mPaint.setShader(null);
                 mPaint.setMaskFilter(mEmboss);
                 return true;
-            case R.id.smudge_menu: {
+            case R.id.smudge_submenu: {
                 /* I considered making this what happens when the blur_menu item is selected, but
                  * that could surprise users who are used to blur_menu's previous functionality, so
                  * I made this new smudge_menu item instead. I don't like calling it "Smudge" because
@@ -247,7 +247,7 @@ public class EasyPaint extends GraphicsActivity implements
                 }
                 return true;
             }
-            case R.id.blur_menu:
+            case R.id.blur_submenu:
                 mPaint.setShader(null);
                 mPaint.setMaskFilter(mBlur);
                 return true;

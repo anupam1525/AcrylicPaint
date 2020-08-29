@@ -62,4 +62,5 @@ Ciò è per permettere a chiunque di usare, studiare, migliorare e ricondividere
     <string name="ability_disabled_need_newer_api_level">Questa funzionalità è disabilitata poiché richiede una versione di Android più aggiornata (almeno API 17).</string>
     <string name="smudge">Sfuma</string>
     <string name="clear_options">Opzioni di cancellazione</string>
+    <string name="drawing_effects">Effetti di disegno</string>
 </resources>

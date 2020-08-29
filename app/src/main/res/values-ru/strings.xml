@@ -64,4 +64,5 @@
     <string name="ability_disabled_need_newer_api_level">Эта возможность отключена, потому что для ее использования требуется более новая версия Android (по крайней мере, уровень API 17).</string>
     <string name="smudge">Размазывание</string>
     <string name="clear_options">Параметры удаления</string>
+    <string name="drawing_effects">Рисовальные эффекты</string>
 </resources>
