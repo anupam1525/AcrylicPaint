@@ -1,7 +1,7 @@
 # Acrylic Paint
 
 Acrylic Paint is a "Free as in Freedom" coloring app for Android which will allow you to share your imagination with others!
-We have made some changes to the FingerPaint project taken from API demos.
+We have made some big changes to the FingerPaint project taken from API demos.
 
 ## Installing
 
@@ -13,10 +13,14 @@ We have made some changes to the FingerPaint project taken from API demos.
 
 Simply import the source code with **Android Studio**.
 
+Then make a pull request to GitHub or run `arc diff` to push directly in our Phabricator instance here:
+
+https://gitpull.it/source/acrylic-paint/
+
 ## Credits
 
 * [Anupam Shrivastava](https://github.com/anupam1525) - Original author (disappeared)
-* [Valerio Bozzolan](https://github.com/valerio-bozzolan) - Revival of the project
+* [Valerio Bozzolan](https://boz.reyboz.it/) - Revival of the project
 * [Marco Gagino](https://github.com/marcogagino-22) - Icons, graphics and massive support
 
 And thanks to all the contributors!
