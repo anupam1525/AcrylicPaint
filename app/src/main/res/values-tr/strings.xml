@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Acrylic Paint</string>
-    <string name="app_description">Acrylic Paint yaratıcılığınızı özgür bırakmanızı sağlayan özgür ve açık kaynak kodlu bir yazılımdır!-\n\nDaha fazla seçenek için Menü'ye basınız.\n\nFikir için Anupam Shrivastava'ya, projeyi dirilttiği için Valerio Bozzolan'a ve korkunç derecede destekleri için fizikçi Marco Gagino'ya teşekkürler. Emeği geçen herkese teşkkürler!\n\nSanat altın bileziktir :)</string>
+    <string name="app_description">Acrylic Paint yaratıcılığınızı özgür bırakmanızı sağlayan özgür ve açık kaynak kodlu bir yazılımdır!-\n\nDaha fazla seçenek için Menü\'ye basınız.\n\nFikir için Anupam Shrivastava\'ya, projeyi dirilttiği için Valerio Bozzolan\'a ve korkunç derecede destekleri için fizikçi Marco Gagino\'ya teşekkürler. Emeği geçen herkese teşkkürler!\n\nSanat altın bileziktir :)</string>
     <string name="here_is_your_canvas">İşte tuvalin. Çizmeye başlayabilirsin!</string>
     <string name="color">Renk Paleti</string>
     <string name="emboss">Keskin (Gölgeli)</string>
