@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.widget.TextView;
+
+import anupam.acrylic.databinding.ActivityAboutBinding;
 
 public class AboutActivity extends Activity {
+    ActivityAboutBinding aboutBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        aboutBinding = ActivityAboutBinding.inflate(getLayoutInflater());
+        setContentView(aboutBinding.getRoot());
         Spanned htmlText = Html.fromHtml(getResources().getString(R.string.about_description));
-        TextView aboutTextView = findViewById(R.id.aboutTextView);
-        aboutTextView.setText(htmlText);
-        aboutTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        aboutBinding.aboutTextView.setText(htmlText);
+        aboutBinding.aboutTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

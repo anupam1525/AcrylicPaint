@@ -58,7 +58,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nabinbhandari.android.permissions.PermissionHandler;
@@ -69,6 +68,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+
+import anupam.acrylic.databinding.BrushBinding;
 
 @SuppressLint("ClickableViewAccessibility")
 public class EasyPaint extends GraphicsActivity implements
@@ -83,6 +84,7 @@ public class EasyPaint extends GraphicsActivity implements
     private MaskFilter mBlur;
     private boolean doubleBackToExitPressedOnce = false;
     private MyView contentView;
+    BrushBinding brushBinding;
 
     private boolean waitingForBackgroundColor = false; //If true and colorChanged() is called, fill the background, else mPaint.setColor()
     private boolean extractingColor = false; //If this is true, the next touch event should extract a color rather than drawing a line.
@@ -307,26 +309,23 @@ public class EasyPaint extends GraphicsActivity implements
     }
 
     private void setBrushSize() {
-        View layout = LayoutInflater.from(this).inflate(R.layout.brush,
-                findViewById(R.id.root));
+        brushBinding = BrushBinding.inflate(LayoutInflater.from(this));
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setView(layout);
+                .setView(brushBinding.root);
         builder.setTitle(R.string.choose_width);
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        SeekBar sb = layout.findViewById(R.id.brushSizeSeekBar);
-        sb.setProgress(getStrokeSize());
-        final TextView txt = layout
-                .findViewById(R.id.sizeValueTextView);
-        txt.setText(String.format(
+
+        brushBinding.brushSizeSeekBar.setProgress(getStrokeSize());
+        brushBinding.sizeValueTextView.setText(String.format(
                 getResources().getString(R.string.your_selected_size_is),
                 getStrokeSize() + 1));
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        brushBinding.brushSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar,
                                           final int progress, boolean fromUser) {
                 // Do something here with new value
                 mPaint.setStrokeWidth(progress);
-                txt.setText(String.format(
+                brushBinding.sizeValueTextView.setText(String.format(
                         getResources().getString(
                                 R.string.your_selected_size_is), progress + 1));
             }

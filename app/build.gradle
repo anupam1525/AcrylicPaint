@@ -32,6 +32,10 @@ android {
         disable 'GoogleAppIndexingWarning'
         abortOnError false
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
