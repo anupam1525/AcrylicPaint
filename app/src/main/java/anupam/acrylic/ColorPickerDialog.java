@@ -34,8 +34,8 @@ import android.view.View;
 @SuppressLint("ClickableViewAccessibility")
 public class ColorPickerDialog extends Dialog {
 
-    private OnColorChangedListener mListener;
-    private int mInitialColor;
+    private final OnColorChangedListener mListener;
+    private final int mInitialColor;
 
     public ColorPickerDialog(Context context,
                              OnColorChangedListener listener,
@@ -68,9 +68,9 @@ public class ColorPickerDialog extends Dialog {
         private static final int CENTER_RADIUS = 100;
         private static final float PI = 3.1415926f;
         private final int[] mColors;
-        private Paint mPaint;
-        private Paint mCenterPaint;
-        private OnColorChangedListener mListener;
+        private final Paint mPaint;
+        private final Paint mCenterPaint;
+        private final OnColorChangedListener mListener;
         private boolean mTrackingCenter;
         private boolean mHighlightCenter;
 
@@ -168,7 +168,7 @@ public class ColorPickerDialog extends Dialog {
 
         @SuppressWarnings("unused")
         private int rotateColor(int color, float rad) {
-            float deg = rad * 180 / 3.1415927f;
+            float deg = rad * 180 / PI;
             int r = Color.red(color);
             int g = Color.green(color);
             int b = Color.blue(color);
