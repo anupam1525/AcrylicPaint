@@ -384,7 +384,7 @@ public class EasyPaint extends GraphicsActivity implements
     }
 
     private boolean isWritePermissionGranted() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ||
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED;
     }
