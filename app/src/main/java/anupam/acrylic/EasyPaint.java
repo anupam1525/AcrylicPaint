@@ -249,73 +249,10 @@ public class EasyPaint extends GraphicsActivity implements
                 mPaint.setMaskFilter(mBlur);
                 return true;
             case R.id.size_menu:
-                View layout = LayoutInflater.from(this).inflate(R.layout.brush,
-                        findViewById(R.id.root));
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setView(layout);
-                builder.setTitle(R.string.choose_width);
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                SeekBar sb = layout.findViewById(R.id.brushSizeSeekBar);
-                sb.setProgress(getStrokeSize());
-                final TextView txt = layout
-                        .findViewById(R.id.sizeValueTextView);
-                txt.setText(String.format(
-                        getResources().getString(R.string.your_selected_size_is),
-                        getStrokeSize() + 1));
-                sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    public void onProgressChanged(SeekBar seekBar,
-                                                  final int progress, boolean fromUser) {
-                        // Do something here with new value
-                        mPaint.setStrokeWidth(progress);
-                        txt.setText(String.format(
-                                getResources().getString(
-                                        R.string.your_selected_size_is), progress + 1));
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-                });
+                setBrushSize();
                 return true;
             case R.id.erase_menu:
-                View layout_e = LayoutInflater.from(this).inflate(R.layout.brush, findViewById(R.id.root));
-                AlertDialog.Builder builder_e = new AlertDialog.Builder(this)
-                        .setView(layout_e);
-                builder_e.setTitle(R.string.choose_width);
-                final AlertDialog alertDialog_e = builder_e.create();
-                alertDialog_e.show();
-                SeekBar sb_e = layout_e.findViewById(R.id.brushSizeSeekBar);
-                sb_e.setProgress(getStrokeSize());
-                final TextView txt_e = layout_e
-                        .findViewById(R.id.sizeValueTextView);
-                txt_e.setText(String.format(
-                        getResources().getString(R.string.your_selected_size_is),
-                        getStrokeSize() + 1));
-                sb_e.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    public void onProgressChanged(SeekBar seekBar,
-                                                  final int progress, boolean fromUser) {
-                        // Do something here with new value
-                        mPaint.setStrokeWidth(progress);
-                        txt_e.setText(String.format(
-                                getResources().getString(
-                                        R.string.your_selected_size_is), progress + 1));
-                    }
-
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        // TODO Auto-generated method stub
-                    }
-                });
+                setBrushSize();
                 mPaint.setShader(null);
                 mPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
                 return true;
@@ -367,6 +304,43 @@ public class EasyPaint extends GraphicsActivity implements
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setBrushSize() {
+        View layout = LayoutInflater.from(this).inflate(R.layout.brush,
+                findViewById(R.id.root));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setView(layout);
+        builder.setTitle(R.string.choose_width);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        SeekBar sb = layout.findViewById(R.id.brushSizeSeekBar);
+        sb.setProgress(getStrokeSize());
+        final TextView txt = layout
+                .findViewById(R.id.sizeValueTextView);
+        txt.setText(String.format(
+                getResources().getString(R.string.your_selected_size_is),
+                getStrokeSize() + 1));
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar,
+                                          final int progress, boolean fromUser) {
+                // Do something here with new value
+                mPaint.setStrokeWidth(progress);
+                txt.setText(String.format(
+                        getResources().getString(
+                                R.string.your_selected_size_is), progress + 1));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     private boolean isWritePermissionGranted() {
