@@ -20,7 +20,6 @@ package anupam.acrylic;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -272,7 +271,10 @@ public class EasyPaint extends GraphicsActivity implements
                 takeScreenshot(true);
                 break;
             case R.id.share_menu:
-                File screenshotPath = takeScreenshot(false);
+                new AlertDialog.Builder(EasyPaint.this)
+                        .setMessage("The share feature is temporarily disabled. To achieve the same effect, save the image and share it using a file explorer.")
+                        .show();
+                /*File screenshotPath = takeScreenshot(false);
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_SEND);
                 i.setType("image/png");
@@ -288,7 +290,7 @@ public class EasyPaint extends GraphicsActivity implements
                     Toast.makeText(this.getApplicationContext(),
                             R.string.no_way_to_share,
                             Toast.LENGTH_LONG).show();
-                }
+                }*/
                 break;
             case R.id.open_image_menu:
                 Intent intent = new Intent();
