@@ -29,7 +29,7 @@ import android.view.ViewParent;
 
 
 public class PictureLayout extends ViewGroup {
-    private static String error = "PictureLayout can host only one direct child";
+    private static final String error = "PictureLayout can host only one direct child";
     private final Picture mPicture = new Picture();
 
     public PictureLayout(Context context) {

@@ -22,14 +22,18 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
+import anupam.acrylic.databinding.MainBinding;
+
 public class Splash extends Activity {
+    MainBinding mainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.main);
+        mainBinding = MainBinding.inflate(getLayoutInflater());
+        setContentView(mainBinding.getRoot());
 
         Thread t = new Thread() {
 
