@@ -1,4 +1,4 @@
-2.4.0 is here!
+2.4.1 is here!
 
 Support-related:
 - Dropped support for Android versions under 14 (by AdamHooyer)
