@@ -1,0 +1,22 @@
+2.4.1 is here!
+
+Support-related:
+- Dropped support for Android versions under 14 (by AdamHooyer)
+- Improved Italian translation (by ilpianista)
+- Added Turkish translation (by berkaygunduzz)
+- Now compiles on and targets API 28 (by TacoTheDank)
+
+Design-related: (by TacoTheDank)
+- Code optimizations
+- Adaptive app icon
+- Muted actionbar color to a paler green so it's not so bright
+- Actionbar will no longer change color for now because white will make icons invisible
+- Improved actionbar icons; they now look much nicer
+- Renamed and reorganized drop-down options to make more sense
+- Created submenus for related options
+- Improved screenshot quality
+
+Feature-related: (by TacoTheDank)
+- Added ability to clear background only
+- Added ability to clear both the foreground and the background at the same time
+- Disabled share feature, as proper implementation for compileSdk above 23 requires support libraries that will severely bloat the APK
